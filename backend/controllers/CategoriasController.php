@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Pedidos;
-use backend\PedidosSearch;
+use backend\models\Categorias;
+use backend\models\search\CategoriasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PedidosController implements the CRUD actions for Pedidos model.
+ * CategoriasController implements the CRUD actions for Categorias model.
  */
-class PedidosController extends Controller
+class CategoriasController extends Controller
 {
     public function behaviors()
     {
@@ -27,12 +27,12 @@ class PedidosController extends Controller
     }
 
     /**
-     * Lists all Pedidos models.
+     * Lists all Categorias models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PedidosSearch();
+        $searchModel = new CategoriasSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -42,8 +42,8 @@ class PedidosController extends Controller
     }
 
     /**
-     * Displays a single Pedidos model.
-     * @param string $id
+     * Displays a single Categorias model.
+     * @param integer $id
      * @return mixed
      */
     public function actionView($id)
@@ -54,16 +54,16 @@ class PedidosController extends Controller
     }
 
     /**
-     * Creates a new Pedidos model.
+     * Creates a new Categorias model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Pedidos();
+        $model = new Categorias();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->name]);
+            return $this->redirect(['view', 'id' => $model->idCate]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -72,9 +72,9 @@ class PedidosController extends Controller
     }
 
     /**
-     * Updates an existing Pedidos model.
+     * Updates an existing Categorias model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -82,7 +82,7 @@ class PedidosController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->name]);
+            return $this->redirect(['view', 'id' => $model->idCate]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -91,9 +91,9 @@ class PedidosController extends Controller
     }
 
     /**
-     * Deletes an existing Pedidos model.
+     * Deletes an existing Categorias model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -104,15 +104,15 @@ class PedidosController extends Controller
     }
 
     /**
-     * Finds the Pedidos model based on its primary key value.
+     * Finds the Categorias model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Pedidos the loaded model
+     * @param integer $id
+     * @return Categorias the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Pedidos::findOne($id)) !== null) {
+        if (($model = Categorias::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

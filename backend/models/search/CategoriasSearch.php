@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace backend\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Providers;
+use backend\models\Categorias;
 
 /**
- * ProvidersSearch represents the model behind the search form about `backend\models\Providers`.
+ * CategoriasSearch represents the model behind the search form about `backend\models\Categorias`.
  */
-class ProvidersSearch extends Providers
+class CategoriasSearch extends Categorias
 {
     /**
      * @inheritdoc
@@ -18,9 +18,8 @@ class ProvidersSearch extends Providers
     public function rules()
     {
         return [
-            [['id_prov', 'id_con'], 'integer'],
-            [['email_prov', 'name_prov', 'phone_prov', 'address_prov', 'datetime_added_prov'], 'safe'],
-            [['score_prov'], 'number'],
+            [['idCate'], 'integer'],
+            [['nombre'], 'safe'],
         ];
     }
 
@@ -42,7 +41,7 @@ class ProvidersSearch extends Providers
      */
     public function search($params)
     {
-        $query = Providers::find();
+        $query = Categorias::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,16 +56,10 @@ class ProvidersSearch extends Providers
         }
 
         $query->andFilterWhere([
-            'id_prov' => $this->id_prov,
-            'id_con' => $this->id_con,
-            'score_prov' => $this->score_prov,
-            'datetime_added_prov' => $this->datetime_added_prov,
+            'idCate' => $this->idCate,
         ]);
 
-        $query->andFilterWhere(['like', 'email_prov', $this->email_prov])
-            ->andFilterWhere(['like', 'name_prov', $this->name_prov])
-            ->andFilterWhere(['like', 'phone_prov', $this->phone_prov])
-            ->andFilterWhere(['like', 'address_prov', $this->address_prov]);
+        $query->andFilterWhere(['like', 'nombre', $this->nombre]);
 
         return $dataProvider;
     }

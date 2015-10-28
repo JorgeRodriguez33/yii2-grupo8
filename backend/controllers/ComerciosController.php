@@ -3,17 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Categorias;
-use backend\models\search\CategoriasSearch;
+use backend\models\Comercios;
+use backend\models\search\ComerciosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
+
 /**
- * CategoriasController implements the CRUD actions for Categorias model.
+ * ComerciosController implements the CRUD actions for Comercios model.
  */
-class CategoriasController extends Controller
+class ComerciosController extends Controller
 {
     public function behaviors()
     {
@@ -28,12 +27,12 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Lists all Categorias models.
+     * Lists all Comercios models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CategoriasSearch();
+        $searchModel = new ComerciosSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -43,7 +42,7 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Displays a single Categorias model.
+     * Displays a single Comercios model.
      * @param integer $id
      * @return mixed
      */
@@ -55,39 +54,25 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Creates a new Categorias model.
+     * Creates a new Comercios model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Categorias();
- 
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
+        $model = new Comercios();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idComercio]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-     
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                $model->refresh();
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return [
-                    'message' => '¡Éxito!',
-                ];
-            } else {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            }
-        }
-     
-        return $this->renderAjax('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
-     * Updates an existing Categorias model.
+     * Updates an existing Comercios model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -97,7 +82,7 @@ class CategoriasController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idCate]);
+            return $this->redirect(['view', 'id' => $model->idComercio]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -106,7 +91,7 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Deletes an existing Categorias model.
+     * Deletes an existing Comercios model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -119,15 +104,15 @@ class CategoriasController extends Controller
     }
 
     /**
-     * Finds the Categorias model based on its primary key value.
+     * Finds the Comercios model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Categorias the loaded model
+     * @return Comercios the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Categorias::findOne($id)) !== null) {
+        if (($model = Comercios::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

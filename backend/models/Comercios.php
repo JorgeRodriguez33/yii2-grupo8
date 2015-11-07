@@ -3,17 +3,17 @@
 namespace backend\models;
 
 use Yii;
-use yii\helpers\BaseJson;
 
 /**
  * This is the model class for table "comercios".
  *
  * @property integer $idComercio
  * @property string $nombre
- * @property string $latitud
- * @property string $longitud
+ * @property double $latitud
+ * @property double $longitud
  * @property integer $prioridad
  * @property string $productos
+ * @property string $direccion
  */
 class Comercios extends \yii\db\ActiveRecord
 {
@@ -25,18 +25,18 @@ class Comercios extends \yii\db\ActiveRecord
         return 'comercios';
     }
 
-    public $prod;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['nombre', 'latitud', 'longitud', 'prioridad', 'productos'], 'required'],
+            [['nombre', 'latitud', 'longitud', 'prioridad', 'productos', 'direccion'], 'required'],
+            [['diasParaRelevar'], 'string'],
+            [['prioridad'], 'string'],
             [['latitud', 'longitud'], 'number'],
-            [['prioridad'], 'integer'],
-            [['nombre'], 'string', 'max' => 45]
-            //[['productos'], 'string', 'max' => 256]
+            [['nombre', 'direccion'], 'string', 'max' => 45],
+            [['productos'], 'string', 'max' => 300]
         ];
     }
 
@@ -52,20 +52,44 @@ class Comercios extends \yii\db\ActiveRecord
             'longitud' => Yii::t('app', 'Longitud'),
             'prioridad' => Yii::t('app', 'Prioridad'),
             'productos' => Yii::t('app', 'Productos'),
+            'direccion' => Yii::t('app', 'Direccion'),
         ];
     }
 
-    //crea un array vacio y lo llena con los productos seleccionados
-        public function beforeValidate()
-    {
+
+    public function beforeValidate()
+    {   
+        
         if (!is_array($this->productos)) {
             $this->productos = array();
         }
         $this->productos = json_encode($this->productos);
 
+        if (!is_array($this->diasParaRelevar)) {
+            $this->diasParaRelevar = array();
+        }
+        $this->diasParaRelevar = json_encode($this->diasParaRelevar);
+       
+
         return parent::beforeValidate();
     }
 
-  
+
+   /* public $prod = array();
+       public function afterFind()
+    {
+        parent::afterFind();
+
+        $this->productos = json_decode($this->productos,true);
+        if (!is_array($this->productos)) {
+            $this->productos = array();
+        }
+        $this->prod=array();
+        if(sizeof($this->productos)) {
+            foreach($this->productos as $color) {
+                $this->prod[$color]=array( 'selected' => 'selected' );
+            }
+        }
+    }*/
 
 }

@@ -1,27 +1,22 @@
-
 <?php
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use backend\models\Productos;
-use backend\controller\ProductosController;
-use yii\helpers\Json;
-/* @var $this yii\web\View */
-/* @var $model backend\models\Comercios */
 
-$this->title = $model->idComercio;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Comercios'), 'url' => ['index']];
+/* @var $this yii\web\View */
+/* @var $model backend\models\Relevadores */
+
+$this->title = $model->idRelevador;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relevadores'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="comercios-view">
+<div class="relevadores-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->idComercio], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idComercio], [
+        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->idRelevador], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->idRelevador], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
@@ -31,105 +26,40 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
 
-    <?php 
+     <?php 
       echo '      
-        <style type="text/css">
-      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}     
-    </style>
+         <style type="text/css">
+             html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}     
+         </style>
 
-            <div class="col-sm-4">                     
-                <div class="col-sm-12" id="panel_ruta" style="overflow: auto; height: 150px" ></div>                                    
-            </div>      
-                
-            <div style="height:100%" class="col-sm-8">
-                    <div id="map-canvas"></div>         
-            </div> '; 
+        <div class="col-sm-4">                     
+            <div class="col-sm-12" id="panel_ruta" style="overflow: auto; height: 150px" ></div>                                    
+        </div>      
+            
+        <div style="height:100%" class="col-sm-8">
+                <div id="map-canvas"></div>         
+        </div> '; 
 
-?>
+         $latitu = $model->latitud;
+         $longitud = $model->longitud;
+    ?>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-          //  'idComercio',
+            'idRelevador',
             'nombre',
+            'kmARecorrer',
+            'correo',
             'latitud',
             'longitud',
-            'prioridad',
-            //'productos',
             'direccion',
         ],
     ]) ?>
 
-
-
-
-    <?php
-    $i = 0;
-    $j = 0;
-/* productos */
-    $arrayPapa=array();
-    $array = explode('"', $model->productos); 
-        foreach ($array as $value) {
-            if($value!="["){
-                if($value!=']'){
-                    if( $value!=','){
-                    $arrayPapa[$i] = $value;
-                    $i++;
-                    }
-                }
-            }
-        }
-
-/* dias de relevamiento */
-    $arrayDias=array();
-    $arrayD = explode('"', $model->diasParaRelevar); 
-        foreach ($arrayD as $value) {
-            if($value!="["){
-                if($value!=']'){
-                    if( $value!=','){
-                    $arrayDias[$j] = $value;
-                    $j++;
-                    }
-                }
-            }
-        }
-
-    $longitudDias = count($arrayDias);
-    $longitud = count($arrayPapa);
-    echo "<h4>Productos del comercio <small>";
-    echo '</small></h4>';
-    echo '<table>';
-    for($i=0; $i<$longitud; $i++)
-    {
-       $id = $arrayPapa[$i];
-       $productos = ArrayHelper::map(Productos::find()->all(), 'idProd', 'nombre');
-       echo"<br>";
-        echo Html::a(Yii::t('app', $productos[$id]), ['../web/productos/view?id='.$id], ['class' => 'btn btn-default']);
-    echo"</br>";
-}
-    echo '</table>';
-
-echo "<h4>Dias para Relevar <small>";
-echo '</small></h4>';
-    for($j=0; $j<$longitudDias; $j++)
-    {   
-       
-        echo $arrayDias[$j];
-         echo"<br>";
-        echo"</br>";
-
-
-}   
-    $latitu = $model->latitud;
-    $longitud = $model->longitud;
-       ?>
-
-
 </div>
 
-
-
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
    
 
 
@@ -239,5 +169,3 @@ echo '</small></h4>';
         google.maps.event.addDomListener(window, 'load', initialize);
      
     </script>
-               
-                 

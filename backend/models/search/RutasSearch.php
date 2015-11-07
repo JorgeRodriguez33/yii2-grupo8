@@ -5,12 +5,12 @@ namespace backend\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Comercios;
+use backend\models\Rutas;
 
 /**
- * ComerciosSearch represents the model behind the search form about `backend\models\Comercios`.
+ * RutasSearch represents the model behind the search form about `backend\models\Rutas`.
  */
-class ComerciosSearch extends Comercios
+class RutasSearch extends Rutas
 {
     /**
      * @inheritdoc
@@ -18,9 +18,8 @@ class ComerciosSearch extends Comercios
     public function rules()
     {
         return [
-            [['idComercio', 'prioridad'], 'integer'],
-            [['nombre', 'productos', 'direccion'], 'safe'],
-            [['latitud', 'longitud'], 'number'],
+            [['idRuta', 'idRelevador'], 'integer'],
+            [['ordenComercios'], 'safe'],
         ];
     }
 
@@ -42,7 +41,7 @@ class ComerciosSearch extends Comercios
      */
     public function search($params)
     {
-        $query = Comercios::find();
+        $query = Rutas::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,15 +56,11 @@ class ComerciosSearch extends Comercios
         }
 
         $query->andFilterWhere([
-            'idComercio' => $this->idComercio,
-            'latitud' => $this->latitud,
-            'longitud' => $this->longitud,
-            'prioridad' => $this->prioridad,
+            'idRuta' => $this->idRuta,
+            'idRelevador' => $this->idRelevador,
         ]);
 
-        $query->andFilterWhere(['like', 'nombre', $this->nombre])
-          //  ->andFilterWhere(['like', 'productos', $this->productos])
-            ->andFilterWhere(['like', 'direccion', $this->direccion]);
+        $query->andFilterWhere(['like', 'ordenComercios', $this->ordenComercios]);
 
         return $dataProvider;
     }

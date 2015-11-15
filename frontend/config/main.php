@@ -11,18 +11,31 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'modules' => [
+    'user' => [
+            'class' => 'dektrium\user\Module',
+            ],
+        ],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
-        'view' => [
+      /*  'view' => [
              'theme' => [
                  'pathMap' => [
                     '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app'
                  ],
              ],
-        ],
+        ],*/
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
+        ],
+
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            // Disable index.php
+            'showScriptName' => false,
+            // Disable r= routes
+            'enablePrettyUrl' => true,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

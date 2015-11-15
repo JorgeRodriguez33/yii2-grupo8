@@ -14,6 +14,7 @@ use Yii;
  * @property string $latitud
  * @property string $longitud
  * @property string $direccion
+ * @property integer $idUsuario
  */
 class Relevadores extends \yii\db\ActiveRecord
 {
@@ -31,8 +32,8 @@ class Relevadores extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'kmARecorrer', 'correo', 'latitud', 'longitud', 'direccion'], 'required'],
-            [['kmARecorrer'], 'integer'],
+            [['nombre', 'kmARecorrer', 'correo', 'latitud', 'longitud', 'direccion', 'idUsuario'], 'required'],
+            [['kmARecorrer', 'idUsuario'], 'integer'],
             [['latitud', 'longitud'], 'number'],
             [['nombre'], 'string', 'max' => 45],
             [['correo'], 'string', 'max' => 255],
@@ -53,12 +54,7 @@ class Relevadores extends \yii\db\ActiveRecord
             'latitud' => Yii::t('app', 'Latitud'),
             'longitud' => Yii::t('app', 'Longitud'),
             'direccion' => Yii::t('app', 'Direccion'),
+            'idUsuario' => Yii::t('app', 'Id Usuario'),
         ];
     }
-
-        public function getRuta()
-{
-        return $this->hasOne(Rutas::className(), ['idRelevador' =>'idRelevador']);
-}
-
 }

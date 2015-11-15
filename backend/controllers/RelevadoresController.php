@@ -64,14 +64,14 @@ class RelevadoresController extends Controller
 
         if ($model->load(Yii::$app->request->post())){
          $address = urlencode($model->direccion);
-        /* $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=" . $address;
+         $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=" . $address;
          $response = file_get_contents($url);
          $json = json_decode($response,true);
         if ($json['status'] == 'ZERO_RESULTS') {
             return array();
-        }*/
-         $model->latitud =-55.895994;//json_encode($json['results'][0]['geometry']['location']['lat']);
-         $model->longitud =-34.346712;//json_encode($json['results'][0]['geometry']['location']['lng']);
+        }
+         $model->latitud =/*-55.895994;*/json_encode($json['results'][0]['geometry']['location']['lat']);
+         $model->longitud =/*-34.346712;*/json_encode($json['results'][0]['geometry']['location']['lng']);
             
             if($model->save()){
  return $this->redirect(['view', 'id' => $model->idRelevador]);
@@ -93,8 +93,20 @@ class RelevadoresController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idRelevador]);
+       if ($model->load(Yii::$app->request->post())){
+         $address = urlencode($model->direccion);
+         $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=" . $address;
+         $response = file_get_contents($url);
+         $json = json_decode($response,true);
+        if ($json['status'] == 'ZERO_RESULTS') {
+            return array();
+        }
+         $model->latitud =/*-55.895994;*/json_encode($json['results'][0]['geometry']['location']['lat']);
+         $model->longitud =/*-34.346712;*/json_encode($json['results'][0]['geometry']['location']['lng']);
+            
+            if($model->save()){
+ return $this->redirect(['view', 'id' => $model->idRelevador]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -122,7 +134,7 @@ class RelevadoresController extends Controller
      * @return Relevadores the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    public function findModel($id)
     {
         if (($model = Relevadores::findOne($id)) !== null) {
             return $model;

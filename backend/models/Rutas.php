@@ -29,6 +29,7 @@ class Rutas extends \yii\db\ActiveRecord
         return [
             [['idRelevador', 'ordenComercios'], 'required'],
             [['idRelevador'], 'integer'],
+            [['diaDeRelevamiento'],'string'],
             [['ordenComercios'], 'string', 'max' => 256]
         ];
     }
@@ -42,6 +43,13 @@ class Rutas extends \yii\db\ActiveRecord
             'idRuta' => Yii::t('app', 'Id Ruta'),
             'idRelevador' => Yii::t('app', 'Id Relevador'),
             'ordenComercios' => Yii::t('app', 'Orden Comercios'),
+            'diaDeRelevamiento' => Yii::t('app', 'dia De Relevamiento'),
         ];
     }
+
+
+        public function getRelevador()
+{
+        return $this->hasOne(Relevador::className(), ['idRelevador' =>'idRelevador']);
+}
 }

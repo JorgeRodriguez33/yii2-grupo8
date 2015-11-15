@@ -5,9 +5,16 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Rutas;
 use backend\models\search\RutasSearch;
+use backend\models\Comercios;
+use backend\models\search\ComerciosSearch;
+use backend\models\Relevadores;
+use backend\models\search\RelevadoresSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use yii\helpers\Url;
 
 /**
  * RutasController implements the CRUD actions for Rutas model.
@@ -21,6 +28,9 @@ class RutasController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+                    'comerciosautomatic' => ['get'],
+                    'comerciosmanual' => ['get'],
+                    'obtenernombrecomercios' => ['get']
                 ],
             ],
         ];
@@ -118,4 +128,142 @@ class RutasController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+
+    public function actionComerciosautomatic($id){
+     
+      
+        $Relevador = array();
+        $comerciosParaRelevar = array();
+
+        $conjuntoComercios = ArrayHelper::toArray(Comercios::find()->all()); //todos los comercios de la db
+        $conjuntoRelevadores = ArrayHelper::toArray(Relevadores::find()->all()); //todos los relevadores de la db
+
+         //obtengo el relevador que seleccione en el dropdownlist
+         foreach ($conjuntoRelevadores as $value) {
+             if($value["idRelevador"]==$id){
+                $Relevador = $value;
+             }
+         }
+$distanciaMayorActual = 0;
+        foreach ($conjuntoComercios as $value) {
+      $latitudeFrom =$Relevador['latitud'];
+      $longitudeFrom =$Relevador['longitud'];
+      $latitudeTo = $value['latitud'];
+      $longitudeTo = $value['longitud'];
+
+      $theta = $longitudeFrom - $longitudeTo;
+      $dist = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+      $dist = acos($dist);
+      $dist = rad2deg($dist);
+      $miles = $dist * 60 * 1.1515;
+      $distancia= ($miles * 1.609344).'km';
+
+
+    if($distancia <= $Relevador['kmARecorrer']){
+     //  if($distanciaMayorActual <= $distancia){
+
+       //    $distanciaMayorActual =  $distancia;
+      // } else{
+           array_push($comerciosParaRelevar, $value['idComercio']);
+      //   }
+    }
+        }
+          echo JSON::encode($comerciosParaRelevar);
+       
+    }
+    
+
+    public function actionComerciosmanual($id){
+      
+        $Relevador = array();
+        $comerciosParaRelevar = array();
+
+        $conjuntoComercios = ArrayHelper::toArray(Comercios::find()->all()); //todos los comercios de la db
+        $conjuntoRelevadores = ArrayHelper::toArray(Relevadores::find()->all()); //todos los relevadores de la db
+
+         //obtengo el relevador que seleccione en el dropdownlist
+         foreach ($conjuntoRelevadores as $value) {
+             if($value["idRelevador"]==$id){
+                $Relevador = $value;
+             }
+         }
+$distanciaMayorActual = 0;
+        foreach ($conjuntoComercios as $value) {
+      $latitudeFrom =$Relevador['latitud'];
+      $longitudeFrom =$Relevador['longitud'];
+      $latitudeTo = $value['latitud'];
+      $longitudeTo = $value['longitud'];
+
+      $theta = $longitudeFrom - $longitudeTo;
+      $dist = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+      $dist = acos($dist);
+      $dist = rad2deg($dist);
+      $miles = $dist * 60 * 1.1515;
+      $distancia= ($miles * 1.609344).'km';
+
+
+    if($distancia <= $Relevador['kmARecorrer']){
+     //  if($distanciaMayorActual <= $distancia){
+
+       //    $distanciaMayorActual =  $distancia;
+      // } else{
+           array_push($comerciosParaRelevar, $value['idComercio']);
+      //   }
+    }
+        }
+          echo JSON::encode($comerciosParaRelevar);
+    }
+    
+     public function actionObtenernombrecomercios($id){
+
+        $Relevador = array();
+        $comerciosParaRelevar = array();
+
+        $conjuntoComercios = ArrayHelper::toArray(Comercios::find()->all()); //todos los comercios de la db
+        $conjuntoRelevadores = ArrayHelper::toArray(Relevadores::find()->all()); //todos los relevadores de la db
+
+         //obtengo el relevador que seleccione en el dropdownlist
+         foreach ($conjuntoRelevadores as $value) {
+             if($value["idRelevador"]==$id){
+                $Relevador = $value;
+             }
+         }
+$distanciaMayorActual = 0;
+        foreach ($conjuntoComercios as $value) {
+      $latitudeFrom =$Relevador['latitud'];
+      $longitudeFrom =$Relevador['longitud'];
+      $latitudeTo = $value['latitud'];
+      $longitudeTo = $value['longitud'];
+
+      $theta = $longitudeFrom - $longitudeTo;
+      $dist = sin(deg2rad($latitudeFrom)) * sin(deg2rad($latitudeTo)) +  cos(deg2rad($latitudeFrom)) * cos(deg2rad($latitudeTo)) * cos(deg2rad($theta));
+      $dist = acos($dist);
+      $dist = rad2deg($dist);
+      $miles = $dist * 60 * 1.1515;
+      $distancia= ($miles * 1.609344).'km';
+
+
+    if($distancia <= $Relevador['kmARecorrer']){
+     //  if($distanciaMayorActual <= $distancia){
+
+      //     $distanciaMayorActual =  $distancia;
+       //} else{
+           array_push($comerciosParaRelevar, $value['nombre']);
+      //   }
+    }
+        }
+
+          echo JSON::encode($comerciosParaRelevar);
+    }
+    
 }
+
+
+
+?>
+
+
+
+
+

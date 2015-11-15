@@ -55,4 +55,10 @@ class Relevadores extends \yii\db\ActiveRecord
             'direccion' => Yii::t('app', 'Direccion'),
         ];
     }
+
+        public function getRuta()
+{
+        return $this->hasOne(Rutas::className(), ['idRelevador' =>'idRelevador']);
+}
+
 }

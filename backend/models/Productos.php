@@ -3,7 +3,7 @@
 namespace backend\models;
 
 use Yii;
-
+use yii\web\UploadedFile;
 /**
  * This is the model class for table "productos".
  *
@@ -29,7 +29,9 @@ class Productos extends \yii\db\ActiveRecord
     {
         return [
             [['nombre', 'imagen', 'idCat'], 'required'],
-            [['imagen'], 'string', 'max' => 300000],
+          //  [['imagen'], 'string', 'max' => 600],
+            [['imagen'], 'safe'],
+            [['imagen'], 'file', 'extensions'=>'jpg, gif, png'],
             [['idCat'], 'integer'],
             [['nombre'], 'string', 'max' => 45]
         ];
@@ -47,6 +49,5 @@ class Productos extends \yii\db\ActiveRecord
             'idCat' => Yii::t('app', 'Id Cat'),
         ];
     }
-
-
+    
 }

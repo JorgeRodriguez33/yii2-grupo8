@@ -43,6 +43,7 @@ AppAsset::register($this);
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post']
                 ];
+                $menuItems[] = ['label' => 'rutaDelDia', 'url' => ['/ruta/rutas'.'?id='. Yii::$app->user->identity->id]];
             }
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
@@ -59,12 +60,6 @@ AppAsset::register($this);
         </div>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-        <p class="pull-right"><?= Yii::powered() ?></p>
-        </div>
-    </footer>
 
     <?php $this->endBody() ?>
 </body>

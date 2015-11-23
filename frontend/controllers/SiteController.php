@@ -2,7 +2,7 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\LoginForm;
+use  common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -13,6 +13,9 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use backend\models\Relevadores;
+use yii\helpers\ArrayHelper;
+use backend\models\Rutas;
 /**
  * Site controller
  */
@@ -97,6 +100,7 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
 
     public function actionContact()
     {

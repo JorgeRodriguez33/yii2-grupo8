@@ -42,6 +42,7 @@ if (isset(Yii::$app->user->identity)) :
                 'options' => ['class' => 'sidebar-menu'],
                 'items' => [
                     '<li class="header">Menu Yii2</li>',
+                    ['label' => '<i class="fa fa-users"></i><span>Categorias</span>', 'url' => ['../web/categorias/index']],
                     ['label' => '<i class="fa fa-users"></i><span>Comercios</span>', 'url' => ['../web/comercios/index']],
                     ['label' => '<i class="fa fa-users"></i><span>Productos</span>', 'url' => ['../web/productos/index']],
                     ['label' => '<i class="fa fa-users"></i><span>Relevadores</span>', 'url' => ['../web/relevadores/index']],

@@ -22,7 +22,8 @@ use yii\helpers\Json;
 ?>
 <script>
 misComerciosFunction = function(c){
- $.get('<?= Yii::$app->urlManager->createUrl("rutas/obtenernombrecomercios") ?>' + '?id=' + $(c).val(), function( data ){
+ var idrev = document.getElementById("rutas-idrelevador").value;
+ $.get('<?= Yii::$app->urlManager->createUrl("rutas/obtenernombrecomercios") ?>' + '?dia=' + $(c).val() + "&" + 'id=' + idrev, function( data ){
     $( "div#container" ).html( data );
         });
 
@@ -34,11 +35,13 @@ myFunction = function(c){
     var radioButTrat = document.getElementsByName("Tipo");
 if ( radioButTrat[0].checked == true) {
         document.getElementById("manual").style.display="none";
-        $.get('<?= Yii::$app->urlManager->createUrl("rutas/comerciosautomatic") ?>' + '?id=' + $(c).val(), function( data ){
+        var idrev = document.getElementById("rutas-idrelevador").value;
+        $.get('<?= Yii::$app->urlManager->createUrl("rutas/comerciosautomatic") ?>' + '?dia=' + $(c).val() + "&" + 'id=' + idrev, function( data ){
          debugger;
+
 //         var data = $.parseJSON(data);
           $('#rutas-ordencomercios').attr('value',data);
-       //$( "div#container" ).html( data );
+       //   $( "div#container" ).html( data );
         });
 
     } else if( radioButTrat[1].checked == true){
@@ -69,10 +72,21 @@ if ( radioButTrat[0].checked == true) {
     echo $form->field($model, 'idRelevador')->dropDownList($relevador,
             ['prompt'=>'-seleccionar Relevador-',
               'onchange'=>'
-              misComerciosFunction(this)
-                myFunction(this)
+             
+               
                 
             '])->label('Relevadores');
+
+
+$diasDeSemana = array('lunes' =>'lunes' ,'martes' =>'martes' ,'miercoles' =>'miercoles' ,'jueves' =>'jueves' ,'viernes' =>'viernes'  );
+
+    echo $form->field($model, 'diaDeRelevamiento')->dropDownList($diasDeSemana,
+            ['prompt'=>'-seleccionar dia a relevar-',
+              'onchange'=>'
+                  misComerciosFunction(this);
+                  myFunction(this)
+            '])->label('Dia para relevar');
+
 
     ?>
 
@@ -80,7 +94,7 @@ if ( radioButTrat[0].checked == true) {
     <?= $form->field($model, 'ordenComercios')->textInput(['maxlength' => true]) ?>
     </div>
 
-    <h4> comercio <small>
+    <h4> Ruta de comercios <small>
     </small></h4>
     <table>
     <div id="container"></div>

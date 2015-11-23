@@ -37,7 +37,7 @@ class Categorias extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idCate' => Yii::t('app', 'Identificador de categoria'),
+            'idCate' => Yii::t('app', 'Id Cate'),
             'nombre' => Yii::t('app', 'Nombre'),
         ];
     }

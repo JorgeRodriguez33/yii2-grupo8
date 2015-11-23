@@ -33,11 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
- <style type="text/css">
-      html, body, #map-canvasR { height: 100%; margin: 0; padding: 0;},     
+ <style>
+    #map-canvas {height: 100%; margin: -5px; padding: 0;},     
     </style>
-    <div style="height:100%" class="col-sm-8">
-            <div id="map-canvasR"></div>         
+    <div style="height:450px" class="col-sm-8">
+            <div id="map-canvas"></div>         
     </div> 
     
 
@@ -54,7 +54,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'longitud',
             'direccion',
         ],
-    ]) ?>
+    ]) 
+
+    ?>
+
+    <?php
+
+    $latitu = $model->latitud;
+    $longitud = $model->longitud;
+
+       ?>
 
 
 
@@ -63,26 +72,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script type="text/javascript">
     
         function initialize() {
     var myOptions = {
-     // center: new google.maps.LatLng(45.4555729, 9.169236),
-      zoom: 13
+     // center: new google.maps.LatLng(-34.9036100, -56.1640446),
+      zoom: 0
         };
-    var map = new google.maps.Map(document.getElementById("map-canvasR"),
+    var map = new google.maps.Map(document.getElementById("map-canvas"),
         myOptions);
 
-var comercio = new google.maps.LatLng(45.4555729, 9.169236);
+    var relev = new google.maps.LatLng(<?=$latitu?>, <?=$longitud?>);
 
 
-var marker = new google.maps.Marker({
-    position: comercio, 
-    map: map});
-
-var bounds = new google.maps.LatLngBounds(comercio);
-map.fitBounds(bounds);
+    var marker = new google.maps.Marker({
+        position: relev, 
+        map: map});
+    var bounds = new google.maps.LatLngBounds(relev);
+    map.fitBounds(bounds);
 
     }
         google.maps.event.addDomListener(window, 'load', initialize);

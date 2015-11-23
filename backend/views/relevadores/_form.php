@@ -15,18 +15,21 @@ use backend\models\Relevadores;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php $usuarios = ArrayHelper::map(user::find()->all(), 'id', 'username')?>
-    <?php $relevadores = ArrayHelper::map(Relevadores::find()->all(), 'idRelevador', 'idUsuario');?>
+    <?php $relevadores = ArrayHelper::toArray(Relevadores::find()->all());?>
+
+
 
     <?php unset($usuarios['1']); ?>
     
     <?php
-    $longitud = count($relevadores);
-     for($i=1;$i<=$longitud;$i++){
-     	if($relevadores[$i]!==0){
-    		unset($usuarios[$relevadores[$i]]);
-     	}
 
-    	}  ?>
+    foreach ($relevadores as $value) {
+       if(!in_array($value['idUsuario'],$usuarios,true)){
+            unset($usuarios[$value['idUsuario']]);
+       }
+    }
+
+         ?>
 
 
     <?= $form->field($model, 'idUsuario')->dropDownList($usuarios)->label('usuario del relevador')?>

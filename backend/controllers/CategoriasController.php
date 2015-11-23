@@ -8,8 +8,7 @@ use backend\models\search\CategoriasSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\web\Response;
-use yii\widgets\ActiveForm;
+
 /**
  * CategoriasController implements the CRUD actions for Categorias model.
  */
@@ -62,28 +61,14 @@ class CategoriasController extends Controller
     public function actionCreate()
     {
         $model = new Categorias();
- 
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()) && $submit == false) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idCate]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
         }
-     
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                $model->refresh();
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return [
-                    'message' => '¡Éxito!',
-                ];
-            } else {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ActiveForm::validate($model);
-            }
-        }
-     
-        return $this->renderAjax('create', [
-            'model' => $model,
-        ]);
     }
 
     /**

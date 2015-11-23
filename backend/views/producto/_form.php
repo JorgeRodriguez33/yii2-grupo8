@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\web\UploadedFile;
+use kartik\widgets\FileInput;
+//use yii\web\UploadedFile;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Productos */
@@ -11,20 +12,20 @@ use yii\web\UploadedFile;
 
 <div class="productos-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-
+    <?php $form = ActiveForm::begin(['options' => ['enctype'=>'multipart/form-data']]); 
+    ?>
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
    
-    <?= $form->field($model, 'imagen')->fileInput(['multiple' => true]) ?>
+    <?= $form->field($model, 'imagen')->fileInput() ?>
     
     <?= $form->field($model, 'idCat')->textInput() ?>
-	<div class="form-group">
+    <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 	<?php
 		//$path = 'C:/xampp/htdocs/yii2-grupo8/backend/views/imagen/pe.png';
-	    $path = UploadedFile::getInstance($model,'imagen');
-		$type = pathinfo($path, PATHINFO_EXTENSION);
+	   // $path = UploadedFile::getInstance($model,'imagen');
+		//$type = pathinfo($path, PATHINFO_EXTENSION);
 		$base64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK8AAACvAQMAAA
 				   CxXBw2AAAABlBMVEX///8AAABVwtN+AAAAAXRSTlMAQObYZgAAAWVJREFUSIn
 				   Nlr2Vg0AMhMUjIKQEl0Jpx3ZGKS7BIYHfzukPHevDKVolmO85mBWaWRG0Nhrf8
@@ -35,7 +36,9 @@ use yii\web\UploadedFile;
 				   c2HiMHrQKL2Wm0CVVMeVi2MM1BK73qxFKOPcY3SsQ+fC4wYl3aLv2WRxJ2Sc02c
 				   74BJZS2PnArUA6z+P4NP9Wagk8bdVTtEOMacyjJzY3I7zRsX/oKq5fUSfnYG3ja
 				   qHGEkuw6OdgkNQLP6y3kyqZ/W+9t+BeB6j/x9fcYdwAAAABJRU5ErkJggg==";
-		echo $path;
+		//echo $path;
+
+
 	//	$data = file_get_contents($path);
 		//$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 		//$base64NU = $base64; 
@@ -49,5 +52,5 @@ use yii\web\UploadedFile;
 		//echo strlen($base64NU);?>
 
 			<?php ActiveForm::end(); ?>
-
+		
 </div>

@@ -121,13 +121,13 @@ echo '</small></h4>';
 
 
 
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+ 
     <script type="text/javascript">
     
         function initialize() {
     var myOptions = {
      // center: new google.maps.LatLng(45.4555729, 9.169236),
-      zoom: 13
+      zoom: 8
         };
     var map = new google.maps.Map(document.getElementById("map-canvas"),
         myOptions);

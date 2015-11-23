@@ -25,10 +25,10 @@ return [
                  ],
              ],
         ],*/
-        'user' => [
+     /*   'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-        ],
+        ],*/
 
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
@@ -52,3 +52,12 @@ return [
     ],
     'params' => $params,
 ];
+
+
+
+
+
+
+
+
+

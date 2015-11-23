@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use yii\web\UploadedFile;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Productos */
 
@@ -23,6 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+         
+
     </p>
 
     <?= DetailView::widget([
@@ -30,9 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'idProd',
             'nombre',
-            'imagen',
-            'idCat',
+            'idCat', 
+
         ],
-    ]) ?>
+    ])
+     ?>
+    <?= Html::label('Imagen')?>
+    <?= Html::img(''.$model->imagen.'', ['alt' => 'Imagen' , 'width'=>'400','height'=>'400'])?>
+
 
 </div>

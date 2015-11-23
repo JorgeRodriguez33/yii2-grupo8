@@ -14,13 +14,18 @@ return [
     'modules' => [
          'user' => [
                 'class' => 'dektrium\user\Module',
-                'admins' => ['jorge']
             ],
+                'admins' => ['admin']
+           
     ],
     'components' => [
-        /*'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
+        // Configuración [User Cookies Backend] //
+       /* 'user' => [
+            'identityCookie' => [
+                'name' => '_backendIdentity',
+             
+                'httpOnly' => true,
+            ],
         ],*/
         'view' => [
             'theme' => [
@@ -72,6 +77,14 @@ return [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
+        ],
+        // Configuration [Session Backend] //
+        'session' => [
+            'name' => 'BACKENDSESSID',
+            'cookieParams' => [
+                'httpOnly' => true,
+                
+            ],
         ],
     ],
     'params' => $params,

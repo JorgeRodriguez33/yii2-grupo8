@@ -2,13 +2,14 @@
 
 namespace backend\controllers;
 
+
 use Yii;
 use backend\models\Productos;
 use backend\models\search\ProductosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\web\UploadedFile;
 /**
  * ProductoController implements the CRUD actions for Productos model.
  */
@@ -60,11 +61,21 @@ class ProductosController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Productos();
+        $model = new Productos();  
+        //// UNA SOLA IMAGEN
+      if ($model->load(Yii::$app->request->post())) {
+            $image= UploadedFile::getInstance($model, 'imagen');
+            $model->imagen = Yii::$app->params['pathImagen'] . $model->nombre . '.' . $image->extension;
+            if($model->save())
+            {
+                $image->saveAs('img/'.$model->nombre. '.' . $image->extension);
+                Yii::$app->getSession()->setFlash('success', 'Producto agregado con éxito');
+                return $this->redirect(['view', 'id' => $model->idProd]); 
+            }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idProd]);
-        } else {
+        }
+       
+                   else {
             return $this->render('create', [
                 'model' => $model,
             ]);

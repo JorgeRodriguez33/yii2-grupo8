@@ -30,7 +30,9 @@ class RutasController extends Controller
                     'delete' => ['post'],
                     'comerciosautomatic' => ['get'],
                     'comerciosmanual' => ['get'],
-                    'obtenernombrecomercios' => ['get']
+                    'obtenernombrecomercios' => ['get'],
+                    'nombrecomerciosmanual' =>['get'],
+                    'getcomercios' =>['get'],
                 ],
             ],
         ];
@@ -63,6 +65,37 @@ class RutasController extends Controller
         ]);
     }
 
+    public function actionGetcomercios($nom){
+
+      $conjuntoComercios = ArrayHelper::toArray(Comercios::find()->all());
+      $arrayIdComercios = Array();
+      $i = 0;
+      $array = Array();
+      $array = explode(',', $nom); 
+        foreach ($array as $value) {
+                    if( $value!=','){
+                    $arrayProd[$i] = $value;
+                    $i++;
+                    }
+        }
+       /* foreach ($conjuntoComercios as $value) {
+          if(in_array($value['nombre'],$array)){
+            array_push($arrayIdComercios,$value['idComercio']);
+          }
+        }*/
+
+        foreach ($array as $value) {
+            foreach ($conjuntoComercios as $value2){
+              if($value==$value2['nombre']){
+                 array_push($arrayIdComercios,$value2['idComercio']);
+              }
+            }
+        }
+
+        echo JSON::encode($arrayIdComercios);
+   
+     }
+
     /**
      * Creates a new Rutas model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -72,7 +105,8 @@ class RutasController extends Controller
     {
         $model = new Rutas();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save();
             return $this->redirect(['view', 'id' => $model->idRuta]);
         } else {
             return $this->render('create', [
@@ -130,6 +164,30 @@ class RutasController extends Controller
     }
 
 
+     
+    
+    
+    //Para crear Rutas Manuales
+
+    public function actionNombrecomerciosmanual(){
+
+      $comerciosParaRelevar = array();
+      $conjuntoComercios = ArrayHelper::toArray(Comercios::find()->all());
+     
+      foreach ($conjuntoComercios as $value) {
+        array_push($comerciosParaRelevar, $value['nombre']);
+      }
+
+       echo JSON::encode($comerciosParaRelevar);
+    }
+
+    public function actionComerciosmanual($id){
+ 
+          return "proximamente...";
+    }
+    
+    //para crear Rutas Automaticas
+
     public function actionComerciosautomatic($dia,$id){
      
         $Relevador = array();
@@ -179,13 +237,7 @@ class RutasController extends Controller
           echo JSON::encode($comerciosParaRelevar);
        
     }
-    
 
-    public function actionComerciosmanual($id){
- 
-          return "proximamente...";
-    }
-    
     public function actionObtenernombrecomercios($dia,$id){
 
       $Relevador = array();

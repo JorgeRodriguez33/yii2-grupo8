@@ -21,15 +21,48 @@ use yii\helpers\Json;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <script>
+
+
+
 misComerciosFunction = function(c){
+ var radioButTrat = document.getElementsByName("Tipo");
+ if ( radioButTrat[0].checked == true) {
  var idrev = document.getElementById("rutas-idrelevador").value;
  $.get('<?= Yii::$app->urlManager->createUrl("rutas/obtenernombrecomercios") ?>' + '?dia=' + $(c).val() + "&" + 'id=' + idrev, function( data ){
-    $( "div#container" ).html( data );
+    
+   // var data = $.parseJSON(data);
+    $( "div#container" ).html(data);
         });
+}else{
+        $.get('<?= Yii::$app->urlManager->createUrl("rutas/nombrecomerciosmanual") ?>', function( data ){
+         $('#nuevatabla').remove();
+        //decode de json
+        var data = $.parseJSON(data);
+        var arrayComercios = Array();
 
+        //creo una tabla en "div#container"
+         $('div#container').append('<table id="nuevatabla"></table>');
+         $('div#containerAgregados').append('<table id="nuevatablaAgregados"></table>');
+            //le agrego a la tabla todos los nombres de comercios obtenidos   
+           $.each(data, function( index, data ) {
+              $('#nuevatabla').append('<tr><td class = btn btn-default id= comercio'+index+'>'+data+'</td></tr>');
+            });
+        $.each(data, function( index, data ) {
+            $('td#comercio'+index).click(function(){
+              var ddd = $(this).text();
+              arrayComercios.push(ddd);
+              $('td#comercio'+index).remove();
+               $('#nuevatablaAgregados').append('<tr><td class = btn btn-default>'+ddd+'</td></tr>');
 
-
-}
+              $.get('<?= Yii::$app->urlManager->createUrl("rutas/getcomercios")?>' + '?nom='+arrayComercios, function( data ){
+                $('#rutas-ordencomercios').attr('value',data);
+              });
+              //$('#rutas-ordencomercios').attr('value',arrayComercios);
+            });
+         });
+      }); 
+    }
+  }
 
 myFunction = function(c){
     var radioButTrat = document.getElementsByName("Tipo");
@@ -39,7 +72,7 @@ if ( radioButTrat[0].checked == true) {
         $.get('<?= Yii::$app->urlManager->createUrl("rutas/comerciosautomatic") ?>' + '?dia=' + $(c).val() + "&" + 'id=' + idrev, function( data ){
          debugger;
 
-//         var data = $.parseJSON(data);
+         
           $('#rutas-ordencomercios').attr('value',data);
        //   $( "div#container" ).html( data );
         });
@@ -94,11 +127,24 @@ $diasDeSemana = array('lunes' =>'lunes' ,'martes' =>'martes' ,'miercoles' =>'mie
     <?= $form->field($model, 'ordenComercios')->textInput(['maxlength' => true]) ?>
     </div>
 
-    <h4> Ruta de comercios <small>
-    </small></h4>
-    <table>
-    <div id="container"></div>
-    </table>
+    <div class="tablaComercios">
+      <div class="row">
+         <div class="col-md-12 col-md-6">
+            <h4> comercios <small>
+            </small></h4>
+            <table>
+            <div id="container"></div>
+            </table>
+         </div>
+         <div class="col-md-12 col-md-6">
+            <h4> comercios Agregados <small>
+            </small></h4>
+            <table>
+            <div id="containerAgregados"></div>
+            </table>
+         </div>
+      </div>
+    <div>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

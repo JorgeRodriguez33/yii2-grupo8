@@ -1,11 +1,12 @@
 <?php
+use yii\helpers\Html;
 /* @var $this yii\web\View */
 $this->title = 'My Yii Application';
 ?>
 <div class="site-pedido">
 <html lang="en">
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta http-equiv="content-type" content="text/css; charset=UTF-8">
 		<meta charset="utf-8">
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -44,11 +45,9 @@ $this->title = 'My Yii Application';
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
           <ul class="nav navbar-nav navbar-right">
-             <li><a href="file:///F:/Programas/xampp/htdocs/yii2-grupo8-master/webMovile/home.html" role="button" >Home</a></li>
-             <li class="active"><a href="file:///F:/Programas/xampp/htdocs/yii2-grupo8-master/webMovile/pedido.html" role="button" >Pedidos</a></li>
-             <li><a href="file:///F:/Programas/xampp/htdocs/yii2-grupo8-master/webMovile/ruta.html" role="button">Rutas</a></li>
-             <li><a href="#loginModal" role="button" data-toggle="modal">Login</a></li>
-             <li><a href="#aboutModal" role="button" data-toggle="modal">About</a></li>
+             <li><?php echo Html::a(Yii::t('app','Home'), ['../web/site/index'], ['class' => 'btn btn-default']); ?></li>
+             <li><?php echo Html::a(Yii::t('app','Rutas'), ['../web/site/rutas'], ['class' => 'btn btn-default']); ?></li>
+
            </ul>
         </div>	
      </div>	

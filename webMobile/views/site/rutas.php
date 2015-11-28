@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Html;
 /* @var $this yii\web\View */
 $this->title = 'My Yii Application';
 ?>
@@ -56,8 +57,9 @@ $this->title = 'My Yii Application';
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
           <ul class="nav navbar-nav navbar-right">
-             <li class="active"><a href="#">Posts</a></li>
-             <li><a href="#loginModal" role="button" data-toggle="modal">Login</a></li>
+             <li><?php echo Html::a(Yii::t('app','Home'), ['../web/site/index'], ['class' => 'btn btn-default']); ?></li>
+             <li class="active"><?php echo Html::a(Yii::t('app','Rutas'), ['../web/site/rutas'], ['class' => 'btn btn-default']); ?></li>
+             <li><a href="#logoutModal" role="button" data-toggle="modal">Logout</a></li>
            </ul>
         </div>  
      </div> 

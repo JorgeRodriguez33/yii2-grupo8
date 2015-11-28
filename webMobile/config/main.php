@@ -37,7 +37,7 @@ return [
             // Disable r= routes
             'enablePrettyUrl' => true,
         ],
-                'session' => [
+            'session' => [
             'name' => 'WEBMOBILESESSID',
             'cookieParams' => [
                 'httpOnly' => true,

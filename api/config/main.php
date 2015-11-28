@@ -50,8 +50,10 @@ return [
                     'POST <apiv:v\d+>/<controller:\w+>/<id:(.)+>'    => '<apiv>/<controller>/create', 
                     'PUT <apiv:v\d+>/<controller:\w+>/<id:(.)+>'     => '<apiv>/<controller>/update',
                     'PATCH <apiv:v\d+>/<controller:\w+>/<id:(.)+>'   => '<apiv>/<controller>/update',
-                    'DELETE <apiv:v\d+>/<controller:\w+>/<id:(.)+>'  => '<apiv>/<controller>/delete',                
-            ]       
+                    'DELETE <apiv:v\d+>/<controller:\w+>/<id:(.)+>'  => '<apiv>/<controller>/delete',  
+                    'POST <apiv:v\d+>/<User:\w+>'              => '<apiv>/<User>/login',
+            ] 
+             
         ]
     ],
     'params' => $params,

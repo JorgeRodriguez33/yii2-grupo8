@@ -10,23 +10,77 @@ $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+        <h2>Registrar Usuario</h2>
+     
+        <div><label for="nombre"></label></div>
+        <div><input class="form-control"  type="text" id = "nombre" name="nombre" value="" placeholder="nombre"  /></div>
+        <div><label for="password"></label></div>
+        <div><input  class="form-control" type="password" id = "password"  name="password" value="" placeholder="password" /></div>
 
-    <p>Please fill out the following fields to login:</p>
+</br>
+        <input name="enviar" value="Guardar" class="btn btn-primary btn-lg btn-block" onclick="makePOST('http://localhost/yii2-grupo8/api/web/v1/User',loginConApi)">
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-                <?= $form->field($model, 'username') ?>
-                <?= $form->field($model, 'password')->passwordInput() ?>
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
-                <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
-                </div>
-                <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                </div>
-            <?php ActiveForm::end(); ?>
-        </div>
-    </div>
 </div>
+
+
+<script type="text/javascript">
+  function makePOSTEJ(apiurl){  
+$.post(apiurl,
+    {username:"ravi",pass:"124",submit:true}).done(function(data, textStatus, jqXHR) 
+        {
+ 
+        }).fail(function(jqXHR, textStatus, errorThrown) 
+    {
+        alert(textStatus);
+    });
+
+  }  
+function makePOST(apiurl, callback){
+    
+    var user = document.getElementById("nombre").value;
+    var pass = document.getElementById("password").value;
+    alert(user);
+    alert(pass);
+          $.ajax({
+              method: "POST",
+              url: apiurl,
+              data: { username: user, passwored: pass }
+            })
+             .done(function( respuesta ) {
+                callback( respuesta );
+              });
+        }
+
+        function makeGET(apiurl, callback){
+          $.ajax({
+              method: "GET",
+              url: apiurl,
+              data: { name: "John", location: "Boston" }
+            })
+              .done(function( respuesta ) {
+                callback( respuesta );
+              });
+        }
+
+        function dibujarTabla(datos){
+           $('body').append('<table id="nuevatabla"></table>');
+           
+           $.each(datos, function( index, producto ) {
+              $('#nuevatabla').append('<tr><td>'+producto.nombre+'</td></tr>')
+            });
+           
+        }
+
+
+        function loginConApi(datos){
+            console.log(datos);
+        }
+
+        $(document).ready(function(){
+            makeGET('http://localhost/yii2-grupo8/api/web/v1/productos',dibujarTabla);
+
+        });
+
+
+
+</script>

@@ -5,12 +5,6 @@ $this->title = 'My Yii Application';
 ?>
 <div class="site-rutas">
 
-    PROBANDO PROBANDO PROBANDO!!!!
-    <?php
-    $response = file_get_contents('http://localhost/yii2-grupo8/api/web/v1/productos');
-    var_dump($response);
-    ?>
-
     <html lang="en">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">

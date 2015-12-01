@@ -5,12 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Pedidos */
 
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
+$this->title = Yii::t('core', 'Update {modelClass}: ', [
     'modelClass' => 'Pedidos',
 ]) . ' ' . $model->idPedido;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Pedidos'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->idPedido, 'url' => ['view', 'id' => $model->idPedido]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('core', 'Update');
 ?>
 <div class="pedidos-update">
 

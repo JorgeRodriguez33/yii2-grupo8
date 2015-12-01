@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Relevadores */
 
-$this->title = Yii::t('app', 'Create Relevadores');
+$this->title = Yii::t('core', 'Create Relevadores');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Relevadores'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

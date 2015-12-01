@@ -17,17 +17,18 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+
     'Country Code' => '',
     'Create' => '',
     'Create Cities' => '',
     'Create Country' => '',
     'Created At' => '',
-    'Delete' => '',
+    'Delete' => 'Eliminar',
     'Name' => '',
     'Population' => '',
     'Reset' => '',
     'Search' => '',
-    'Update' => '',
+    'Update' => 'Actualizar',
     'Update {modelClass}: ' => '',
     'Updated At' => '',
     'Are you sure you want to delete this item?' => '¿Está seguro de eliminar este elemento?',

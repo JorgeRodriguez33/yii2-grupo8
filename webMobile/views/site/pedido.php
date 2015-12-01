@@ -52,7 +52,7 @@ $this->title = 'My Yii Application';
         </div>	
      </div>	
 </div>
-
+  <?php var_dump($comercioPedido);  ?>
     <div class="container" id="main">
        <div class="row">
         <div class="col-md-12"><h2>Pedidos</h2></div>
@@ -63,8 +63,6 @@ $this->title = 'My Yii Application';
 
                     <ul class="nav nav-tabs">
                       <li class="active"><a href="#A" data-toggle="tab">ComercioA</a></li>
-                      <li><a href="#B" data-toggle="tab">ComercioB</a></li>
-                      <li><a href="#C" data-toggle="tab">ComercioC</a></li>
                     </ul>
                     <div class="tabbable">
                       <div class="tab-content">
@@ -73,41 +71,13 @@ $this->title = 'My Yii Application';
                             <form class="form-horizontal" role="form">
                                  <div class="form-group" style="padding:14px;">
                                         <ul class="table-form">
-                                           <li><label>Maria</label> <input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioA"></input> </li>
-                                           <li><label>Oreos</label><input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioB"></input> </li>
-                                           <li><label>Surtidas</label> <input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioC"></input> </li>
+                                          <div id="container"></div>
                                         </ul> 
                                         <button class="btn btn-success pull-right" type="button">Aceptar</button>
                                  </div>
 
                               </form>
                           </div>
-                        </div>
-                        <div class="tab-pane" id="B">
-                           <div class="well well-sm">Ingrese el pedido.
-                            <form class="form-horizontal" role="form">
-                                 <div class="form-group" style="padding:14px;">
-                                        <ul class="table-form">
-                                           <li><label>Maria</label> <input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioA"></input> </li>
-                                           <li><label>Oreos</label><input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioB"></input> </li>
-                                           <li><label>Surtidas</label> <input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioC"></input> </li>
-                                        </ul> 
-                                        <button class="btn btn-success pull-right" type="button">Aceptar</button>
-                                 </div>
-                              </form>
-                        </div>
-                        <div class="tab-pane" id="C">
-                            <div class="well well-sm">Ingrese el pedido.
-                            <form class="form-horizontal" role="form">
-                                    <div class="form-group" style="padding:14px;">
-                                        <ul class="table-form">
-                                           <li><label>Maria</label> <input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioA"></input> </li>
-                                           <li><label>Oreos</label><input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioB"></input> </li>
-                                           <li><label>Surtidas</label> <input class="form-control pull-right col-md-6 col-sm-6" placeholder="Ingrese cantidad" id="ComercioC"></input> </li>
-                                        </ul> 
-                                        <button class="btn btn-success pull-right" type="button">Aceptar</button>
-                                 </div>
-                              </form>
                         </div>
                       </div>
                     </div> <!-- /tabbable -->
@@ -124,3 +94,19 @@ $this->title = 'My Yii Application';
 
 
 </div>
+
+
+
+<script type="text/javascript">
+$(window).load(function() 
+{
+var data = <?php if(!empty($comercioPedido)){ echo json_encode($comercioPedido);}?>;
+
+alert(data);
+
+$('div#container').append('<table id="nuevatabla"></table>');
+$.each(data, function( index, data ) {
+  $('#nuevatabla').append('<li><label>'+data+'</label><input class=form-control pull-right col-md-6 col-sm-6 placeholder=Ingrese cantidad id=producto' +index+'></input> </li>');
+});
+}); 
+</script>

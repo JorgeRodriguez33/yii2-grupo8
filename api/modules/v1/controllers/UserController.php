@@ -9,35 +9,36 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 
 use Yii;
-use dektrium\user\models\LoginForm;
+use common\models\LoginForm;
 use dektrium\user\models\User;
+use yii\helpers\Json;
 
 class UserController extends ActiveController
 {
-    public $modelClass = "dektrium\user\models\User";
-    
-
-    public function actions()
-    {
-        $actions = parent::actions();
-        unset($actions['login']);
-        return $actions;
-    }
-
+    public $modelClass = "common\models\LoginForm";
 
     public function actionLogin(){
-       $l = $_POST['username'];
-        console.log($l);
 
-       /*  $model = new LoginForm();
- 
+        $model = new LoginForm();
          if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-            return ['access_token' => Yii::$app->user->identity->getAuthKey()];
+        //    return Yii::$app->user->identity->getAuthKey();
+        //    return ApiResponse::reponseWithStatus(['accessToken' => Yii::$app->user->identity->getAuthKey(), 'NameUser' => Yii::$app->user->identity->username, 'NameUser' => Yii::$app->user->identity->id]);
+         return ApiResponse::reponseWithStatus(['accessToken' => Yii::$app->user->identity->getAuthKey(), 'NameUser' => Yii::$app->user->identity->username, 'idUser' => Yii::$app->user->identity->id]);
+
          } else {
-            $model->validate();
-            return $model;
-         }*/
-         return "KAAKAK";
+            
+            return ApiResponse::reponseWithStatus(Yii::$app->getRequest()->getBodyParams(), 403);
+         }
     }
 
 }
+
+class ApiResponse {
+
+    public static function reponseWithStatus($data, $status = 200){
+        Yii::$app->response->statusCode = $status;
+        return JSON::encode($data);
+    }
+
+}
+

@@ -1,5 +1,7 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use backend\models\Comercios; 
 /* @var $this yii\web\View */
 $this->title = 'My Yii Application';
 ?>
@@ -19,7 +21,11 @@ $this->title = 'My Yii Application';
 		<link href="css/styles.css" rel="stylesheet">
 	</head>
 	<body>
+<?php
 
+ session_start();
+ // session_destroy();
+?>
 <div class="navbar navbar-default" id="subnav">
     <div class="col-md-12">
         <div class="navbar-header">
@@ -37,13 +43,40 @@ $this->title = 'My Yii Application';
         <div class="collapse navbar-collapse" id="navbar-collapse2">
           <ul class="nav navbar-nav navbar-right">
           <li class="active"><?php echo Html::a(Yii::t('app','Home'), ['../web/site/index'], ['class' => 'btn btn-default']); ?></li>
-             <li><?php echo Html::a(Yii::t('app','Rutas'), ['../web/site/rutas'], ['class' => 'btn btn-default']); ?></li>
-              <li><?php echo Html::a(Yii::t('app','Login'), ['../web/site/login'], ['class' => 'btn btn-default']); ?></li>
-            
+          <?php 
+              if (empty($_SESSION['miSession'])) 
+              {
+                ?>
+               
+               <li><?php echo Html::a(Yii::t('app','Login'), ['../web/site/login'], ['class' => 'btn btn-default']); ?></li>
+             
+             <?php 
+           }
+          ?>
+           <?php 
+              if (!empty($_SESSION['miSession'])) 
+              {
+                ?>
+                <li><?php echo Html::a(Yii::t('app','Rutas'), ['../web/site/rutas'], ['class' => 'btn btn-default']); ?></li>
+                <?php
+                $nom ='Hola&nbsp;'.$_SESSION['miSession']['nombre'].'!';
+                echo '<li class="active">'; echo Html::a(Yii::t('app',$nom),[""], ['class' => 'btn btn-default']); echo '</li>';
+                
+              }
+            ?>  
+            <?php 
+              if (!empty($_SESSION['miSession'])) 
+              {
+                ?>
+                <li><?php echo Html::a(Yii::t('app','Cerrar sesión'), ['../web/site/out'], ['class' => 'btn btn-default']); ?></li>
+              <?php 
+              }
+            ?>  
            </ul>
         </div>	
      </div>	
 </div>
+
 
 <!--main-->
 
@@ -70,8 +103,27 @@ $this->title = 'My Yii Application';
                
             <div class="panel-body">
               <div class="list-group">
-              <li class="list-group-item"><?php echo Html::a(Yii::t('app','nombre dle comercio'), ['../web/site/pedido'], ['class' => 'btn btn-default']); ?></li>
-                <!--<a href="../web/site/pedido" class="list-group-item"><h5>ComercioA</h5> <p> direccion del comercio</p></a>
+              <?php
+              if(!empty($_SESSION['comerciosDelDia'])){
+               $rutaArray = $_SESSION['comerciosDelDia'];
+               $conjuntoComercios = ArrayHelper::toArray(Comercios::find()->all());
+               $rutaDeComercios = array();
+               $longitud = count($rutaArray);
+                 for($i=0; $i<$longitud; $i++)
+              {
+                   $id =$rutaArray[$i];
+                   foreach($conjuntoComercios as $value){
+                    if($value['idComercio']==$id){
+                     array_push($rutaDeComercios, $value);
+
+                   echo '<li class="list-group-item">'; echo Html::a(Yii::t('app',$value['nombre']), ['../web/site/pedido?id='.$id], ['class' => 'btn btn-default']); echo '</li>';
+                    }
+                   }
+              }
+            }
+              ?>
+              <!-- <li class="list-group-item"><?php// echo Html::a(Yii::t('app','nombre del comercio'), ['../web/site/pedido'], ['class' => 'btn btn-default']); ?></li>
+               <a href="../web/site/pedido" class="list-group-item"><h5>ComercioA</h5> <p> direccion del comercio</p></a>
                 <a href="../web/site/pedido" class="list-group-item"><h5>ComercioB</h5> <p> direccion del comercio</p></a>
                 <a href="../web/site/pedido" class="list-group-item"><h5>ComercioC</h5> <p> direccion del comercio</p></a>-->
               </div>
@@ -94,14 +146,6 @@ $this->title = 'My Yii Application';
 </div><!--/main-->
 
 <!--login modal-->
-
-PROBANDO PROBANDO PROBANDO!!!!
-    <?php
-    // $response = file_get_contents('http://localhost/yii2-grupo8/api/web/v1/productos');
-    
-    // var_dump($response);
-    ?>
-
 
 	<!-- script references -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -143,31 +187,49 @@ PROBANDO PROBANDO PROBANDO!!!!
            
         }
 
+        function getRutaRelevador(apiurl){
+          $.ajax({
+              method: "GET",
+              url: apiurl,
+            })
+              .done(function(data) {
+                alert(data);
+              });
+        }
 
-        $(document).ready(function(){
-            makeGET('http://localhost/yii2-grupo8/api/web/v1/productos',dibujarTabla);
-
-        });
-
+   
         function initialize() {
           var myOptions = {
-                center: new google.maps.LatLng(-34.800411,-56.1241394),
-                zoom: 13
-                  };
-              var map = new google.maps.Map(document.getElementById("map-canvas"),
-                  myOptions);
+          center: new google.maps.LatLng(-34.9036100, -56.1640446),
+          zoom: 15,
+            };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),myOptions);
 
-          var comercio = new google.maps.LatLng(-34.800411,-56.1241394);
+        var arrayComercios=<?php if(!empty($rutaDeComercios)){ echo json_encode($rutaDeComercios);}?>;
+        var arrayPuntos = Array();
+        var arrayMarker = Array();
+        var arrayBounds = Array();
 
+         for(var i=0;i<arrayComercios.length;i++)
+         {
+           arrayPuntos.push(new google.maps.LatLng(arrayComercios[i]['latitud'], arrayComercios[i]['longitud']));
+           arrayMarker.push(new google.maps.Marker({position:arrayPuntos[i], map: map}));
+           arrayBounds.push(new google.maps.LatLngBounds(arrayPuntos[i]));
+         }
 
-          var marker = new google.maps.Marker({
-              position: comercio, 
-              map: map});
+        for(var i=0;i<arrayBounds.length;i++)
+        {
+        map.fitBounds(arrayBounds[i]);
+        }
+        var lineas = new google.maps.Polyline({        
+        path: arrayPuntos,
+        map: map, 
+        strokeColor: '#222000', 
+        strokeWeight: 4,  
+        strokeOpacity: 0.6, 
+        clickable: false     }); 
 
-          var bounds = new google.maps.LatLngBounds(comercio);
-          map.fitBounds(bounds);
-
-              }
+        }
         google.maps.event.addDomListener(window, 'load', initialize);
      
     </script>

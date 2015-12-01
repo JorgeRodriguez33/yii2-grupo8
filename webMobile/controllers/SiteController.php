@@ -12,6 +12,8 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use backend\models\Comercios; 
+use backend\models\Productos; 
 
 use backend\models\Relevadores;
 use yii\helpers\ArrayHelper;
@@ -52,6 +54,8 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'getsession' => ['post'],
+                    'getrutaindex' => ['post'],
                 ],
             ],
         ];
@@ -73,14 +77,107 @@ class SiteController extends Controller
         ];
     }
 
+
+    public function actionOut()
+    {
+      session_destroy();
+
+         return $this->redirect(['index']);
+    }
+
+    public function actionGetrutaindex($datos){
+
+         return $this->redirect(['index'], ['datos' => $datos]); 
+    }
+
+    public function actionGetsession($nom)
+    {
+        session_start();
+        
+      $i=0;
+      $array = Array();
+      $array = explode('"', $nom); 
+        foreach ($array as $value) {
+            if( $value!=':'){
+                if($value != 'accessToken'){
+                    if( $value!='NameUser'){
+                       if($value != 'idUser'){
+                            $arrayProd[$i] = $value;
+                           }
+                        }
+                    }
+                }
+                $i++;
+    }
+
+      $idUsu = explode(':', $array[10]);
+      $idUsu = explode('}', $idUsu[1]);
+
+    $miSession = array('id'=>$idUsu[0],
+                       'nombre'=>$array[7]);
+       
+        $_SESSION['miSession'] =  $miSession;
+
+    /*preparo la ruta del ida para esta session */
+
+     $response = file_get_contents('http://localhost/yii2-grupo8/api/web/v1/apimobile/ruta/'.$idUsu[0].'-jueves');
+     $arrayRuta = Array();
+     $arrayRuta = explode('[', json_decode($response)); 
+
+     $arrayRuta = explode(']', $arrayRuta[2]); 
+     $arrayRuta = explode(',', $arrayRuta[0]); 
+
+        $_SESSION['comerciosDelDia'] =  $arrayRuta;
+
+        return $this->redirect(['index']);
+    }
+
     public function actionIndex()
     {
         return $this->render('index');
     }
 
-    public function actionPedido()
+    public function actionPedido($id)
     {
-        return $this->render('pedido');
+        $comercioPedido = Array();
+        $arratIdProd = Array();
+        $arratId = Array();
+        $arrayNombresProductos = array();
+
+        $conjuntoComercios= ArrayHelper::toArray(Comercios::find()->all());
+        $conjuntoProductos= ArrayHelper::toArray(Productos::find()->all());
+
+        foreach ($conjuntoComercios as $value) {
+          if($value['idComercio'] == $id){
+            $comercioPedido = $value;
+          }
+        }
+
+        $arratIdProd = $comercioPedido['productos'];
+        $arratIdProd =  explode('"', $arratIdProd);  
+
+        $i=0;
+        foreach ($arratIdProd as $value) {
+            if( $value!=':'){
+                if($value != '['){
+                    if( $value!=','){
+                       if($value != ']'){
+                            $arratId[$i] = $value;
+                        }
+                    }
+               }
+            }
+         $i++;
+        }
+
+        //me queda hacer el foreach siguiente pero que por cada value pregunte si su idProd existe dentro del pajar arratIdProd y asi voy sacando los nombres de los productos
+        foreach ($conjuntoProductos as $value) {
+          if(in_array($value['idProd'],$arratId)){
+           array_push($arrayNombresProductos, $value['nombre']);
+          }
+        }
+
+       return $this->render('pedido', ['comercioPedido' => $arrayNombresProductos]);
     }
 
     public function actionRutas()

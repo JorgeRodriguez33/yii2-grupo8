@@ -8,6 +8,8 @@ use yii\bootstrap\ActiveForm;
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
+
+
 ?>
 <div class="site-login">
         <h2>Registrar Usuario</h2>
@@ -18,13 +20,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <div><input  class="form-control" type="password" id = "password"  name="password" value="" placeholder="password" /></div>
 
 </br>
-        <input name="enviar" value="Guardar" class="btn btn-primary btn-lg btn-block" onclick="makePOST('http://localhost/yii2-grupo8/api/web/v1/User',loginConApi)">
+        <input name="enviar" value="Login" class="btn btn-primary btn-lg btn-block" onclick="makeLogin('http://localhost/yii2-grupo8/api/web/v1/apimobile/session')">
 
 </div>
 
 
 <script type="text/javascript">
-  function makePOSTEJ(apiurl){  
+/*  function makePOSTEJ(apiurl){  
 $.post(apiurl,
     {username:"ravi",pass:"124",submit:true}).done(function(data, textStatus, jqXHR) 
         {
@@ -34,7 +36,34 @@ $.post(apiurl,
         alert(textStatus);
     });
 
-  }  
+  }  */
+
+
+
+function makeLogin(apiurl){
+    
+    var user = document.getElementById("nombre").value;
+    var pass = document.getElementById("password").value;
+    alert(user);
+    alert(pass);
+    alert(apiurl);
+
+    $.post(apiurl,
+    {username: user, password: pass},
+    function(data, textStatus, jqXHR)
+    {
+
+      alert(data);
+      
+      $.post('<?= Yii::$app->urlManager->createUrl("site/getsession")?>' + '?nom='+data, function( data ){
+              });
+        //data - response from server
+    }).fail(function(jqXHR, textStatus, errorThrown) 
+    {
+        alert(textStatus);
+    });
+}
+
 function makePOST(apiurl, callback){
     
     var user = document.getElementById("nombre").value;
@@ -80,7 +109,6 @@ function makePOST(apiurl, callback){
             makeGET('http://localhost/yii2-grupo8/api/web/v1/productos',dibujarTabla);
 
         });
-
 
 
 </script>

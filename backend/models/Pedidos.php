@@ -29,8 +29,9 @@ class Pedidos extends \yii\db\ActiveRecord
     {
         return [
             [['nombreComercio', 'nombreProducto', 'cantidad'], 'required'],
-            [['nombreProducto', 'cantidad'], 'integer'],
-            [['nombreComercio'], 'string', 'max' => 45]
+            [['cantidad'], 'integer'],
+            [['nombreComercio'], 'string', 'max' => 45],
+            [['nombreProducto'], 'string', 'max' => 45]
         ];
     }
 

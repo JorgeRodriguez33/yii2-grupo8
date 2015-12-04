@@ -18,6 +18,7 @@ use backend\models\Productos;
 use backend\models\Relevadores;
 use yii\helpers\ArrayHelper;
 use backend\models\Rutas;
+use yii\helpers\Json;
 /**
  * Site controller
  */
@@ -56,6 +57,7 @@ class SiteController extends Controller
                     'logout' => ['post'],
                     'getsession' => ['post'],
                     'getrutaindex' => ['post'],
+                    'getcomerciobyruta'=> ['get'],
                 ],
             ],
         ];
@@ -80,7 +82,8 @@ class SiteController extends Controller
 
     public function actionOut()
     {
-      session_destroy();
+        session_start();
+        session_destroy();
 
          return $this->redirect(['index']);
     }
@@ -89,6 +92,19 @@ class SiteController extends Controller
 
          return $this->redirect(['index'], ['datos' => $datos]); 
     }
+
+    public function actionGetcomerciobyruta($usuario,$dia){
+
+     $response = file_get_contents('http://localhost/yii2-grupo8/api/web/v1/apimobile/ruta/'.$usuario.'-'.$dia);
+     $arrayRuta = Array();
+     $arrayRuta = explode('[', json_decode($response)); 
+
+     $arrayRuta = explode(']', $arrayRuta[2]); 
+     $arrayRuta = explode(',', $arrayRuta[0]); 
+
+     echo JSON::encode($arrayRuta);
+    }
+
 
     public function actionGetsession($nom)
     {
@@ -150,6 +166,7 @@ class SiteController extends Controller
         foreach ($conjuntoComercios as $value) {
           if($value['idComercio'] == $id){
             $comercioPedido = $value;
+            $nomComercio = $value['nombre'];
           }
         }
 
@@ -177,8 +194,53 @@ class SiteController extends Controller
           }
         }
 
-       return $this->render('pedido', ['comercioPedido' => $arrayNombresProductos]);
+       return $this->render('pedido', ['comercioPedido' => $arrayNombresProductos, 'nombreComercio' => $nomComercio, "idComercio"=> $id]);
     }
+
+    public function actionStock($id)
+    {
+        $comercioStock = Array();
+        $arratIdProd = Array();
+        $arratId = Array();
+        $arrayNombresProductos = array();
+
+        $conjuntoComercios= ArrayHelper::toArray(Comercios::find()->all());
+        $conjuntoProductos= ArrayHelper::toArray(Productos::find()->all());
+
+        foreach ($conjuntoComercios as $value) {
+          if($value['idComercio'] == $id){
+            $comercioStock = $value;
+            $nomComercio = $value['nombre'];
+          }
+        }
+
+        $arratIdProd = $comercioStock['productos'];
+        $arratIdProd =  explode('"', $arratIdProd);  
+
+        $i=0;
+        foreach ($arratIdProd as $value) {
+            if( $value!=':'){
+                if($value != '['){
+                    if( $value!=','){
+                       if($value != ']'){
+                            $arratId[$i] = $value;
+                        }
+                    }
+               }
+            }
+         $i++;
+        }
+
+        //me queda hacer el foreach siguiente pero que por cada value pregunte si su idProd existe dentro del pajar arratIdProd y asi voy sacando los nombres de los productos
+        foreach ($conjuntoProductos as $value) {
+          if(in_array($value['idProd'],$arratId)){
+           array_push($arrayNombresProductos, $value['nombre']);
+          }
+        }
+
+       return $this->render('stock', ['comerciostock' => $arrayNombresProductos, 'nombreComercio' => $nomComercio]);
+    }
+
 
     public function actionRutas()
     {

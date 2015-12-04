@@ -44,16 +44,10 @@ function makeLogin(apiurl){
     
     var user = document.getElementById("nombre").value;
     var pass = document.getElementById("password").value;
-    alert(user);
-    alert(pass);
-    alert(apiurl);
-
     $.post(apiurl,
     {username: user, password: pass},
     function(data, textStatus, jqXHR)
     {
-
-      alert(data);
       
       $.post('<?= Yii::$app->urlManager->createUrl("site/getsession")?>' + '?nom='+data, function( data ){
               });

@@ -29,15 +29,6 @@ $this->title = 'My Yii Application';
 <div class="navbar navbar-default" id="subnav">
     <div class="col-md-12">
         <div class="navbar-header">
-          
-          <a href="#" style="margin-left:15px;" class="navbar-btn btn btn-default btn-plus dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i class="glyphicon glyphicon-chevron-down"></i></small></a>
-         
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse2">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          </button>
       
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
@@ -156,47 +147,6 @@ $this->title = 'My Yii Application';
    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
     <script type="text/javascript">
         
-        function makePOST(apiurl){
-          $.ajax({
-              method: "POST",
-              url: apiurl,
-              data: { username: "John", passwored: "Boston" }
-            })
-              .done(function( msg ) {
-                console.info( msg );
-              });
-        }
-
-        function makeGET(apiurl, callback){
-          $.ajax({
-              method: "GET",
-              url: apiurl,
-              data: { name: "John", location: "Boston" }
-            })
-              .done(function( respuesta ) {
-                callback( respuesta );
-              });
-        }
-
-        function dibujarTabla(datos){
-           $('body').append('<table id="nuevatabla"></table>');
-           
-           $.each(datos, function( index, producto ) {
-              $('#nuevatabla').append('<tr><td>'+producto.nombre+'</td></tr>')
-            });
-           
-        }
-
-        function getRutaRelevador(apiurl){
-          $.ajax({
-              method: "GET",
-              url: apiurl,
-            })
-              .done(function(data) {
-                alert(data);
-              });
-        }
-
    
         function initialize() {
           var myOptions = {

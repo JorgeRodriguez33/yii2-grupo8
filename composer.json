@@ -24,7 +24,8 @@
         "yiisoft/yii2-codeception": "^2.0",
         "codeception/codeception": "2.0.*",
         "codeception/specify": "*",
-        "codeception/verify": "*"
+        "codeception/verify": "*",
+        "phpmailer/phpmailer": "^5.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "*",

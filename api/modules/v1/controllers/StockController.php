@@ -11,9 +11,9 @@ use yii\filters\auth\HttpBearerAuth;
  *
  * @author Budi Irawan <deerawan@gmail.com>
  */
-class PedidosController extends ActiveController
+class StockController extends ActiveController
 {
-    public $modelClass = 'backend\models\Pedidos';    
+    public $modelClass = 'backend\models\Stock';    
 
 
 	public function actionSavepedido()

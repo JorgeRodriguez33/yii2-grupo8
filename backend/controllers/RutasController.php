@@ -65,7 +65,8 @@ class RutasController extends Controller
         ]);
     }
 
-    public function actionGetcomercios($nom){
+    public function actionGetcomercios($nom)
+    {
 
       $conjuntoComercios = ArrayHelper::toArray(Comercios::find()->all());
       $arrayIdComercios = Array();

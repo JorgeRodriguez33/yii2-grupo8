@@ -47,9 +47,12 @@ return [
 
                     'POST <apiv:v\d+>/apimobile/session'             => '<apiv>/user/login',
                     'DELETE <apiv:v\d+>/apimobile/session'           => '<apiv>/user/logout',
+
                     'HEAD <apiv:v\d+>/<controller:\w+>'              => '<apiv>/<controller>/index',
 
-                    'GET <apiv:v\d+>/apimobile/ruta/<id:(.)+>'     => '<apiv>/rutas/getruta',
+                    'POST <apiv:v\d+>/apimobile/pedido'                 => '<apiv>/pedidos/savepedido',
+
+                    'GET <apiv:v\d+>/apimobile/ruta/<id:(.)+>'       => '<apiv>/rutas/getruta',
 
                //     'GET <apiv:v\d+>/<controller:\w+>'               => '<apiv>/<controller>/index',
                     'HEAD <apiv:v\d+>/<controller:\w+>/<id:(.)+>'    => '<apiv>/<controller>/view',

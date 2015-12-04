@@ -1,10 +1,16 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use backend\models\Comercios; 
 /* @var $this yii\web\View */
 $this->title = 'My Yii Application';
 ?>
 <div class="site-rutas">
-
+    <?php
+      session_start();
+      $comercios = ArrayHelper::toArray(Comercios::find()->all());
+      var_dump($comercios);
+     ?>
     <html lang="en">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -33,7 +39,7 @@ $this->title = 'My Yii Application';
           </button>
       
         </div>
-        
+       
      </div> 
 </nav>
 <div class="navbar navbar-default" id="subnav">
@@ -66,11 +72,11 @@ $this->title = 'My Yii Application';
           
         <div class="panel-body">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a href="#lunes" data-toggle="tab" onclick="initialize();" >Lunes</a></li>
-                  <li><a href="#martes" data-toggle="tab" onclick="initialize();"  >Martes</a></li>
-                  <li><a href="#miercoles" data-toggle="tab" onclick="initialize();"  >Miercoles</a></li>
-                  <li><a href="#jueves" data-toggle="tab" onclick="initialize();" >Jueves</a></li>
-                  <li><a href="#viernes" data-toggle="tab" onclick="initialize();">Viernes</a></li>
+                  <li class="active"><a href="#lunes" data-toggle="tab" onclick="initialize('lunes');" >Lunes</a></li>
+                  <li><a href="#martes" data-toggle="tab" onclick="initialize('martes');"  >Martes</a></li>
+                  <li><a href="#miercoles" data-toggle="tab" onclick="initialize('miercoles');"  >Miercoles</a></li>
+                  <li><a href="#jueves" data-toggle="tab" onclick="initialize('jueves');" >Jueves</a></li>
+                  <li><a href="#viernes" data-toggle="tab" onclick="initialize('viernes');">Viernes</a></li>
                 </ul>
                 
                 <br>
@@ -78,7 +84,7 @@ $this->title = 'My Yii Application';
                   <div class="tab-content">
                     <div class="tab-pane active" id="lunes">
                       <div class="col-sm-6">
-                         
+                          
                           <div id="googleMap" style="width:300px;height:180px;"></div>
                       </div>
                       <div class="col-sm-4">
@@ -192,18 +198,44 @@ $this->title = 'My Yii Application';
 
 
     <!-- script references -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <script src="../js/jquery-1.11.1.min.js"></script>
+        <script src="../js/moment.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/scripts.js"></script>
    <script src="js/prettify/prettify.js"></script>
    <script
      src="http://maps.googleapis.com/maps/api/js">
    </script>
-   <script>
+   <script type="text/javascript">
 
+  var idUsuario = <?php if(!empty($_SESSION['miSession']['id'])){ echo json_encode($_SESSION['miSession']['id']);}?>; 
+  var conjuntoComercios = <?php echo json_encode($comercios);?>;
+  var rutaDeComercios = Array();
+  var longitudConjuntoComercios = conjuntoComercios.length;
+  var longitudComercios = 0;
+  var id = 0;
+   function initialize(diaDeRuta) {
+ 
+      $.get('<?= Yii::$app->urlManager->createUrl("site/getcomerciobyruta")?>'+'?usuario='+idUsuario+ "&" + 'dia=' +diaDeRuta, function( data ){
+          longitudComercios=data.length;
+          alert(data);  
+          alert(conjuntoComercios); 
 
+          for (var i = 0; i < longitudComercios; i++) {
+          id =data[i]['idComercio'];
+            for (var j = 0; j < longitudConjuntoComercios; j++) {
+              if(conjuntoComercios[j]['idComercio']==id){
+                rutaDeComercios.push(conjuntoComercios[j]);
 
-   function initialize() {
+                  alert(conjuntoComercios[j]['idComercio']);
+                  //                  $('#btn-group-vertical').append('<li><label id=nomProd>'+conjuntoComercios[j]['nombre']+'</label><input class=form-control pull-right col-md-6 col-sm-6 placeholder=Ingrese cantidad id=producto></input> </li>');
+
+              }
+            }
+          }
+           
+        });
+
     var mapProp = {
     center:new google.maps.LatLng(51.508742,-0.120850),
     zoom:5,  
@@ -228,6 +260,8 @@ $this->title = 'My Yii Application';
           $('pre').addClass('prettyprint');
                 
       }); // end document.ready
+
+
     </script>
     </body>
 </html>

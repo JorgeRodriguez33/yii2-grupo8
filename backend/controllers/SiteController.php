@@ -5,9 +5,11 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
+use common\models\User;
 use yii\filters\VerbFilter;
 use dektrium\user\Finder;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
@@ -43,7 +45,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index','confirmarusuario'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -111,4 +113,25 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
+    
+    /*la confirmacion de un usuario por parte del admin*/
+   /* public function actionConfirmaruser($userName){
+        $model = new User();
+        $temp="";
+        $temp = $model->findByUsername($userName)['created_at'];
+        $model->findByUsername($userName)['confirmed_at'] = $temp; 
+        $model->save();
+        
+    }*/
+
+    /*se  toman todos los usuarios que esperan la confirmacion del admin*/
+    public function actionconfirmarusuario(){
+//        $conjuntoUsuarios = ArrayHelper::toArray(User::find()->all());
+
+
+        return $this->render('confirmarusuario');
+
+    }
+
 }

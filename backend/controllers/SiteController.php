@@ -10,7 +10,8 @@ use yii\filters\VerbFilter;
 use dektrium\user\Finder;
 use yii\web\NotFoundHttpException;
 use yii\helpers\ArrayHelper;
-
+use yii\helpers\Json;
+use yii\helpers\Url;
 /**
  * Site controller
  */
@@ -55,6 +56,8 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'obtener' => ['get'],
+                    'Confirmaruser'=> ['post'],
                 ],
             ],
         ];
@@ -116,22 +119,39 @@ class SiteController extends Controller
 
     
     /*la confirmacion de un usuario por parte del admin*/
-   /* public function actionConfirmaruser($userName){
+    public function actionConfirmaruser($userName){
         $model = new User();
         $temp="";
         $temp = $model->findByUsername($userName)['created_at'];
         $model->findByUsername($userName)['confirmed_at'] = $temp; 
         $model->save();
         
-    }*/
-
-    /*se  toman todos los usuarios que esperan la confirmacion del admin*/
-    public function actionconfirmarusuario(){
-//        $conjuntoUsuarios = ArrayHelper::toArray(User::find()->all());
-
-
-        return $this->render('confirmarusuario');
-
     }
 
+    /*se  toman todos los usuarios que esperan la confirmacion del admin*/
+    public function actionObtener(){
+        $conjuntoUsuarios = ArrayHelper::toArray(User::find()->all());
+        $cont = 0;
+        $arrayNombres = array();
+        foreach ($conjuntoUsuarios as $value) {
+        if($value['confirmed_at'] == null){
+            array_push($arrayNombres, $value['username']);
+            }
+        }
+        echo JSON::encode($arrayNombres);
+    }
+
+    public function actionConfirmarusuario(){
+     $conjuntoUsuarios = ArrayHelper::toArray(User::find()->all());
+     $cont = 0;
+     $arrayNombres = array();
+     foreach ($conjuntoUsuarios as $value) {
+     if($value['confirmed_at'] == null){
+        array_push($arrayNombres, $value['username']);
+        }
+     }
+      return $this->render('confirmarusuario', [
+                'arrayNombres' => $arrayNombres,
+            ]);
+    }
 }

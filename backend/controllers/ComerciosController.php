@@ -8,7 +8,9 @@ use backend\models\search\ComerciosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use backend\models\Stock;
+use yii\helpers\ArrayHelper;
+use backend\models\Productos;
 /**
  * ComerciosController implements the CRUD actions for Comercios model.
  */
@@ -60,9 +62,23 @@ class ComerciosController extends Controller
      */
     
     public function actionCreate()
-    {
+    {      
         $model = new Comercios();
         if ($model->load(Yii::$app->request->post())){
+
+        $cantProd = count($model->productos);  
+             
+             $productos = ArrayHelper::map(Productos::find()->all(), 'idProd', 'nombre');
+            /*se crea el stock inicial para el comercio*/
+            for($i = 0 ; $i<$cantProd; $i++) {
+                $id = $model->productos[$i];
+                $modelStock = new Stock();
+                $modelStock->nombreComercio = $model->nombre;
+                $modelStock->cantidadEnStock = 0;
+                $modelStock->nombreProducto = $productos[$id];
+                $modelStock->save();
+            }
+
          $address = urlencode($model->direccion);
          $url = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=" . $address;
          $response = file_get_contents($url);
@@ -74,7 +90,7 @@ class ComerciosController extends Controller
          $model->longitud =/*-34.346712;*/json_encode($json['results'][0]['geometry']['location']['lng']);
             
             if($model->save()){
- return $this->redirect(['view', 'id' => $model->idComercio]);
+             return $this->redirect(['view', 'id' => $model->idComercio]);
             }
         }   
          else {
@@ -151,31 +167,8 @@ class ComerciosController extends Controller
 <script type="text/javascript">
 
 
-//window.addEventListener("load",function(){
+
 var lat="-96.895994";
 var lon="-34.346712";
-  // $("#comercios-form".latitud).val('-55.895994');//latLng.coords.latitude
-  // $("#comercios-form").val('-34.346712');//latLng.coords.longitude
-//alert("paseee");
-//});
-
-
-/*    var geocoder;
-   var latLng;    
-
-function success() {
-
-
-   geocoder = new google.maps.Geocoder();
- latLng = new google.maps.LatLng(-55.895994 ,-34.346712);
-          geocoder.geocode( { 'address': <?php echo '$direccion'; ?>}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-             updateMarkerPosition(results[0].geometry.location);
-           } 
-        });
-
-
-     } 
-*/
 
 </script>

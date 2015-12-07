@@ -38,7 +38,6 @@ $this->title = 'My Yii Application';
         <div class="collapse navbar-collapse" id="navbar-collapse3">
           <ul class="nav navbar-nav navbar-right">
               <li><?php echo Html::a(Yii::t('app','Home'), ['../web/site/index'], ['class' => 'btn btn-default']); ?></li>
-              <li><?php echo Html::a(Yii::t('app','Rutas'), ['../web/site/rutas'], ['class' => 'btn btn-default']); ?></li>
               <li><?php echo Html::a(Yii::t('app','Stock'), ['../web/site/stock?id='.$idComercio], ['class' => 'btn btn-default']); ?></li>
            </ul>
         </div>

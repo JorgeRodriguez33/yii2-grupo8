@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use backend\models\Comercios; 
 use backend\models\Productos; 
+use backend\models\Stock; 
 
 use backend\models\Relevadores;
 use yii\helpers\ArrayHelper;
@@ -136,7 +137,13 @@ class SiteController extends Controller
 
     /*preparo la ruta del ida para esta session */
 
-     $response = file_get_contents('http://localhost/yii2-grupo8/api/web/v1/apimobile/ruta/'.$idUsu[0].'-jueves');
+    $arrayDias = array('domingo','lunes','martes',
+       'miercoles','jueves','viernes','sabado');
+    $dia = $arrayDias[date("w")];
+
+     $response = file_get_contents('http://localhost/yii2-grupo8/api/web/v1/apimobile/ruta/'.$idUsu[0].'-'.$dia);
+
+     if(empty($response) == false){
      $arrayRuta = Array();
      $arrayRuta = explode('[', json_decode($response)); 
 
@@ -144,7 +151,10 @@ class SiteController extends Controller
      $arrayRuta = explode(',', $arrayRuta[0]); 
 
         $_SESSION['comerciosDelDia'] =  $arrayRuta;
-
+      } 
+      else{
+         $_SESSION['sinComreciosParaHoy'] = array('mensaje'=>'El relevador no tiene rutas para este dia...');
+      }
         return $this->redirect(['index']);
     }
 
@@ -199,53 +209,34 @@ class SiteController extends Controller
 
     public function actionStock($id)
     {
-        $comercioStock = Array();
-        $arratIdProd = Array();
-        $arratId = Array();
+
+        $idStockDeComercio = Array();
         $arrayNombresProductos = array();
+        $cantStockDeComercio = array();
+
 
         $conjuntoComercios= ArrayHelper::toArray(Comercios::find()->all());
-        $conjuntoProductos= ArrayHelper::toArray(Productos::find()->all());
+        $conjuntoStock= ArrayHelper::toArray(Stock::find()->all());
 
         foreach ($conjuntoComercios as $value) {
           if($value['idComercio'] == $id){
-            $comercioStock = $value;
             $nomComercio = $value['nombre'];
           }
         }
 
-        $arratIdProd = $comercioStock['productos'];
-        $arratIdProd =  explode('"', $arratIdProd);  
-
-        $i=0;
-        foreach ($arratIdProd as $value) {
-            if( $value!=':'){
-                if($value != '['){
-                    if( $value!=','){
-                       if($value != ']'){
-                            $arratId[$i] = $value;
-                        }
-                    }
-               }
-            }
-         $i++;
+        foreach ($conjuntoStock as $value) {
+         if($value['nombreComercio'] == $nomComercio){
+            array_push($arrayNombresProductos, $value['nombreProducto']);//obtengo los nombres de los productos del stock de ese comercio
+            array_push($idStockDeComercio, $value['idStock']);
+            array_push($cantStockDeComercio, $value['cantidadEnStock']);
+         }
         }
 
-        //me queda hacer el foreach siguiente pero que por cada value pregunte si su idProd existe dentro del pajar arratIdProd y asi voy sacando los nombres de los productos
-        foreach ($conjuntoProductos as $value) {
-          if(in_array($value['idProd'],$arratId)){
-           array_push($arrayNombresProductos, $value['nombre']);
-          }
-        }
 
-       return $this->render('stock', ['comerciostock' => $arrayNombresProductos, 'nombreComercio' => $nomComercio]);
+       return $this->render('stock', ['comerciostock' => $arrayNombresProductos, 'nombreComercio' => $nomComercio, 'idStockDeComercio' =>$idStockDeComercio,'cantStockDeComercio' => $cantStockDeComercio]);
     }
 
 
-    public function actionRutas()
-    {
-        return $this->render('rutas');
-    }
 
     public function actionLogin()
     {

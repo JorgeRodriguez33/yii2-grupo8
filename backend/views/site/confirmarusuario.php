@@ -37,17 +37,17 @@ use yii\helpers\Html;
             $('td#comercio'+index).click(function(){
               var ddd = $(this).text();
               $('td#comercio'+index).remove();
-              makeuser('http://localhost/yii2-grupo8/api/web/site/Confirmaruser' + '?userName='+ddd);
+              makeuser('<?= Yii::$app->urlManager->createUrl("site/confirmar") ?>'+ '?userName=' +ddd);
               //$('#rutas-ordencomercios').attr('value',arrayComercios);
             });
          });
     }); 
 
-function makeuser(apiurl){
-    $.post(apiurl,
+function makeuser(url){
+    $.post(url,
     function(data, textStatus, jqXHR)
     {
-    	alert("anda");
+    	alert(data);
         //data - response from server
     }).fail(function(jqXHR, textStatus, errorThrown) 
     {

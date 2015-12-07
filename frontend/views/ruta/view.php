@@ -34,7 +34,7 @@ $rutaDeComercios = array();
         if($value['idComercio']==$id){
 
           array_push($rutaDeComercios, $value);
-
+            
         echo Html::a(Yii::t('app',$value['nombre']), ['../web/ruta/view?id='.$id], ['class' => 'btn btn-default']);
         }
        }

@@ -9,7 +9,11 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 
-
+$arrayDias = array(  'domingo', 'lunes', 'martes',
+       'miercoles', 'jueves', 'viernes','sabado');
+    $dia = '-'.$arrayDias[date("w")];
+    echo date("w");
+    echo $dia;
 ?>
 <div class="site-login">
         <h2>Registrar Usuario</h2>

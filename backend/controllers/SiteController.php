@@ -5,17 +5,27 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
-use common\models\User;
+use yii\base\Model;
+
+use dektrium\user\models;
+use dektrium\user\models\User;
+use dektrium\user\models\UserSearch;
+use dektrium\user\Module;
+
 use yii\filters\VerbFilter;
 use dektrium\user\Finder;
 use yii\web\NotFoundHttpException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Url;
+
+use yii\base\Object;
+use yii\db\ActiveQuery;
+
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends Controller 
 {
     /** @var Finder */
     protected $finder;
@@ -46,7 +56,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','confirmarusuario'],
+                        'actions' => ['logout', 'index','confirmarusuario','confirmar'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -57,7 +67,7 @@ class SiteController extends Controller
                 'actions' => [
                     'logout' => ['post'],
                     'obtener' => ['get'],
-                    'Confirmaruser'=> ['post'],
+                    'confirmar'=> ['post'],
                 ],
             ],
         ];
@@ -119,31 +129,19 @@ class SiteController extends Controller
 
     
     /*la confirmacion de un usuario por parte del admin*/
-    public function actionConfirmaruser($userName){
-        $model = new User();
-        $temp="";
-        $temp = $model->findByUsername($userName)['created_at'];
-        $model->findByUsername($userName)['confirmed_at'] = $temp; 
-        $model->save();
-        
-    }
+    public function actionConfirmar($userName){
 
-    /*se  toman todos los usuarios que esperan la confirmacion del admin*/
-    public function actionObtener(){
-        $conjuntoUsuarios = ArrayHelper::toArray(User::find()->all());
-        $cont = 0;
-        $arrayNombres = array();
-        foreach ($conjuntoUsuarios as $value) {
-        if($value['confirmed_at'] == null){
-            array_push($arrayNombres, $value['username']);
-            }
-        }
-        echo JSON::encode($arrayNombres);
+        $user = $this->finder->findUserByUsername($userName);
+
+        $user['confirmed_at'] = $user['created_at']; 
+        $user->scenario = 'update';
+        $user->save();
+
+         echo JSON::encode('usuario '.$user['username'].' confirmado!');
     }
 
     public function actionConfirmarusuario(){
      $conjuntoUsuarios = ArrayHelper::toArray(User::find()->all());
-     $cont = 0;
      $arrayNombres = array();
      foreach ($conjuntoUsuarios as $value) {
      if($value['confirmed_at'] == null){

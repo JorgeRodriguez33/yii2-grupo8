@@ -48,7 +48,6 @@ $this->title = 'My Yii Application';
               if (!empty($_SESSION['miSession'])) 
               {
                 ?>
-                <li><?php echo Html::a(Yii::t('app','Rutas'), ['../web/site/rutas'], ['class' => 'btn btn-default']); ?></li>
                 <?php
                 $nom ='Hola&nbsp;'.$_SESSION['miSession']['nombre'].'!';
                 echo '<li class="active">'; echo Html::a(Yii::t('app',$nom),[""], ['class' => 'btn btn-default']); echo '</li>';
@@ -111,7 +110,11 @@ $this->title = 'My Yii Application';
                     }
                    }
               }
-            }
+            }else if(!empty( $_SESSION['sinComreciosParaHoy'])){
+            ?>
+                   <h3> <?= $_SESSION['sinComreciosParaHoy']['mensaje'];?></h3>
+              <?php
+                  } 
               ?>
               <!-- <li class="list-group-item"><?php// echo Html::a(Yii::t('app','nombre del comercio'), ['../web/site/pedido'], ['class' => 'btn btn-default']); ?></li>
                <a href="../web/site/pedido" class="list-group-item"><h5>ComercioA</h5> <p> direccion del comercio</p></a>

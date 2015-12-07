@@ -20,7 +20,7 @@ use yii\helpers\Json;
     {
        $id = $ruta[$i]["idRuta"];
        echo"<br>";
-        echo Html::a(Yii::t('app',$ruta[$i]["diaDeRelevamiento"]), ['../web/ruta/view?id='.$id], ['class' => 'btn btn-default']);
+        echo Html::a(Yii::t('core',$ruta[$i]["diaDeRelevamiento"]), ['../web/ruta/view?id='.$id], ['class' => 'btn btn-default']);
     echo"</br>";
 }
     echo '</table>';

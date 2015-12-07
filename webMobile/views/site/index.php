@@ -14,11 +14,11 @@ $this->title = 'My Yii Application';
 		<title>Web Mobile</title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/css/bootstrap.min.css" rel="stylesheet">
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<link href="css/styles.css" rel="stylesheet">
+		<link href="../css/css/styles.css" rel="stylesheet">
 	</head>
 	<body>
 <?php
@@ -26,53 +26,78 @@ $this->title = 'My Yii Application';
  session_start();
  // session_destroy();
 ?>
-<div class="navbar navbar-default" id="subnav">
+<nav class="navbar navbar-fixed-top header">
+  <div class="col-md-12">
+        <div class="navbar-header">
+          
+          <a href="#" class="navbar-brand">Relevando</a>
+
+
+      
+        </div>
+
+
+   
+          
+     </div> 
+</nav>
+<div class="navbar navbar-default" id="subnav" style="margin-right: 0px">
     <div class="col-md-12">
         <div class="navbar-header">
+          
+         
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse2">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
       
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
-          <ul class="nav navbar-nav navbar-right">
-          <li class="active"><?php echo Html::a(Yii::t('app','Home'), ['../web/site/index'], ['class' => 'btn btn-default']); ?></li>
+
+          <ul class="nav navbar-nav navbar-left">
+
+             <li class="active"><?php echo Html::a(Yii::t('core','Home'), ['../web/site/index']); ?></li>
           <?php 
               if (empty($_SESSION['miSession'])) 
               {
                 ?>
                
-               <li><?php echo Html::a(Yii::t('app','Login'), ['../web/site/login'], ['class' => 'btn btn-default']); ?></li>
+               <li><?php echo Html::a(Yii::t('core','Login'), ['../web/site/login']); ?></li>
              
              <?php 
            }
           ?>
-           <?php 
-              if (!empty($_SESSION['miSession'])) 
-              {
-                ?>
-                <?php
-                $nom ='Hola&nbsp;'.$_SESSION['miSession']['nombre'].'!';
-                echo '<li class="active">'; echo Html::a(Yii::t('app',$nom),[""], ['class' => 'btn btn-default']); echo '</li>';
-                
-              }
-            ?>  
             <?php 
               if (!empty($_SESSION['miSession'])) 
               {
                 ?>
-                <li><?php echo Html::a(Yii::t('app','Cerrar sesión'), ['../web/site/out'], ['class' => 'btn btn-default']); ?></li>
+                <li><?php echo Html::a(Yii::t('app','Cerrar sesión'), ['../web/site/out']); ?></li>
               <?php 
               }
             ?>  
            </ul>
-        </div>	
-     </div>	
+        </div>  
+     </div> 
 </div>
+
 
 
 <!--main-->
 
 <div class="container" id="main">
    <div class="row">
-    <div class="col-md-12"><h2>Bienvenido</h2></div>
+    <div class="col-md-12">   
+                                                         <?php 
+              if (!empty($_SESSION['miSession'])) 
+              {
+                ?>
+                <?php
+                $nom ='Bienvenido&nbsp;'.$_SESSION['miSession']['nombre'].'!';
+                echo '<h2 class="active">'; echo $nom; echo '</h2>';
+                
+              }
+            ?></div>
    <div class="col-md-12 col-sm-6">
         <div class="panel panel-default">
           <div class="panel-heading"> <h4>Ruta del dia</h4></div>
@@ -143,8 +168,8 @@ $this->title = 'My Yii Application';
 
 	<!-- script references -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/scripts.js"></script>
+		<!--<script src="js/bootstrap.min.js"></script>-->
+		<script src="../js/js/scripts.js"></script>
 	</body>
 
    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>

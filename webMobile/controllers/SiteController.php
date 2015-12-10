@@ -143,16 +143,18 @@ class SiteController extends Controller
 
      $response = file_get_contents('http://localhost/yii2-grupo8/api/web/v1/apimobile/ruta/'.$idUsu[0].'-'.$dia);
 
-     if(empty($response) == false){
-     $arrayRuta = Array();
-     $arrayRuta = explode('[', json_decode($response)); 
+      $arrayRuta = Array();
+     $response = json_decode($response);
 
+     if($response!=='[]'){
+    
+     $arrayRuta = explode('[', $response); 
      $arrayRuta = explode(']', $arrayRuta[2]); 
      $arrayRuta = explode(',', $arrayRuta[0]); 
-
-        $_SESSION['comerciosDelDia'] =  $arrayRuta;
+     $_SESSION['comerciosDelDia'] =  $arrayRuta;
       } 
-      else{
+      else
+      if( $response=='[]'){
          $_SESSION['sinComreciosParaHoy'] = array('mensaje'=>'El relevador no tiene rutas para este dia...');
       }
         return $this->redirect(['index']);

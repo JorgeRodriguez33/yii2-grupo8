@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
+use yii\helpers\Json;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \common\models\LoginForm */
@@ -9,14 +9,9 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
 
-$arrayDias = array(  'domingo', 'lunes', 'martes',
-       'miercoles', 'jueves', 'viernes','sabado');
-    $dia = '-'.$arrayDias[date("w")];
-    echo date("w");
-    echo $dia;
 ?>
 <div class="site-login">
-        <h2>Registrar Usuario</h2>
+        <h2>LOGIN</h2>
      
         <div><label for="nombre"></label></div>
         <div><input class="form-control"  type="text" id = "nombre" name="nombre" value="" placeholder="nombre"  /></div>

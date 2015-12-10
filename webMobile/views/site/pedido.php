@@ -99,14 +99,16 @@ function makePedido(apiurl){
     {nombreComercio:nomCom , nombreProducto: arrayNombre[i],cantidad:cantidades},
     function(data, textStatus, jqXHR)
     {
-      alert("Pedido Generado!");
+      
       
     }).fail(function(jqXHR, textStatus, errorThrown) 
     {
-        alert(textStatus);
+      
     });
 
     }
+        alert("Pedido Generado!");
+         location.reload();
 }
 
 

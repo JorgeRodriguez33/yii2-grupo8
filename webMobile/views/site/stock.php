@@ -106,8 +106,8 @@ var urlTemp = apiurl;
           url: apiurl,
           data: { nombreComercio:nomCom , nombreProducto: arrayNombre[i],cantidadEnStock:cantidades}
         })
-          .done(function( ) {
-
+          .done(function(data) {
+             location.reload();
           });
 
   apiurl = urlTemp;
